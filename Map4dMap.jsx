@@ -1,10 +1,12 @@
 import React from 'react';
 
-export function AddLibrary(url) {
-  const script = document.createElement('script');
+export function addLibrary(url, id) {
+  const script = document.createElement('script')
   script.src = url;
   script.defer = true;
-  document.body.appendChild(script);
+  script.id = id
+  document.body.appendChild(script)
+  return script
 }
 
 class Map4dMap extends React.Component {  
@@ -35,6 +37,9 @@ class Map4dMap extends React.Component {
 
   componentWillUnmount() {
     Map4dMap.mapKeys.delete(this.mapKey)
+    if (this.mapScript != null && this.mapScript.remove) {
+      this.mapScript.remove()
+    }
     this.map && this.map.destroy()
   }
 
@@ -44,16 +49,16 @@ class Map4dMap extends React.Component {
     if (this.props.mapid) {
       url += `&mapId=${this.props.mapid}`
     }
+    if (this.mapScript != null && this.mapScript.remove) {
+      this.mapScript.remove()
+    }
+    this.mapScript = addLibrary(url, this.mapKey)
     return (
       <div 
       style={{width: '100%', height: '100%'}} 
       id={`${this.mapKey}`} 
       ref={(e) => this.mapDomRef = e}>
-        {
-          AddLibrary(url)
-        }
       </div>
-
     );
   }
 }
