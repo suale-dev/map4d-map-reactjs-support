@@ -36,6 +36,12 @@ function App() {
       return newMaps
     })
   }
+
+  const onMapReady = (map) => {
+    console.log("Map is created")
+    //TODO: Map interaction from here
+  }
+
   return (
     <div style={{ width: '100%', height: '400px' }}>
       <input placeholder='version' onChange={changeVersion} />
@@ -50,7 +56,7 @@ function App() {
               key={map.id}
               style={{ width: '100%', height: '200px' }}
               id={map.id}
-              onMapReady={map => console.log(map)}
+              onMapReady={onMapReady}
               options={{
                 center: { lat: 16.072163491469226, lng: 108.22690536081757 },
                 zoom: 15,
