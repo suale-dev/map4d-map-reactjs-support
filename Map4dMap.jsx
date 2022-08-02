@@ -30,7 +30,7 @@ class Map4dMap extends React.Component {
     window[this.callback] = () => {
       if (this.mapDomRef) {        
         let options = props.options
-        this.map = new map4d.Map(this.mapDomRef, options)
+        this.map = new window.map4d.Map(this.mapDomRef, options)
         if (props.onMapReady) {
           props.onMapReady(this.map)
         }
