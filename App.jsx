@@ -3,7 +3,7 @@ import Map4dMap from './Map4dMap.jsx'
 
 function App() {
   const [maps, setMaps] = useState([])
-  const [version, setVersion] = useState("")
+  const [version, setVersion] = useState("2.4")
   const [key, setKey] = useState("")
   const [id, setId] = useState("")
   const changeVersion = (e) => {
@@ -37,14 +37,22 @@ function App() {
     })
   }
 
-  const onMapReady = (map) => {
-    console.log("Map is created")
+  const onMapReady = (map, id) => {
+    console.log(`Map with id ${id} is created`)
     //TODO: Map interaction from here
+    let centerMap = map.getCamera().getTarget()
+    let marker = new map4d.Marker({
+      position: centerMap,
+      anchor: [0.5, 1.0],
+      label: new map4d.MarkerLabel({text: "Demo Marker", color: "0xFF00FF", fontSize: 12})
+    })
+    // Thêm marker vào bản đồ
+    marker.setMap(map)
   }
 
   return (
-    <div style={{ width: '100%', height: '400px' }}>
-      <input placeholder='version' onChange={changeVersion} />
+    <div style={{ width: '80%', height: '400px' }}>
+      <input placeholder='version' value={2.4} onChange={changeVersion} />
       <input placeholder='key' onChange={changeKey} />
       <input placeholder='id' onChange={changeId} />
       <button onClick={add}>Thêm map</button>
@@ -54,7 +62,6 @@ function App() {
           return (
             <Map4dMap
               key={map.id}
-              style={{ width: '100%', height: '200px' }}
               id={map.id}
               onMapReady={onMapReady}
               options={{

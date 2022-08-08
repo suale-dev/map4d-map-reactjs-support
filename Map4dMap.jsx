@@ -14,30 +14,14 @@ export function addLibrary(url, id) {
   return script
 }
 
-class Map4dMap extends React.Component {  
+class Map4dMap extends React.Component {
   constructor(props) {
     super(props)
-    if (Map4dMap.mapKeys == null) {
-      Map4dMap.mapKeys = new Map()
+    if (props.id == null || props.id == "") {
+      console.warn('Prop `id` is null or empty, map might work NOT correctly')
     }
-    this.mapKey = props.id || "default"
-    if (!Map4dMap.mapKeys.has(this.mapKey)) {
-      Map4dMap.mapKeys.set(this.mapKey, this.mapKey)
-    } else {
-      console.error(`Map4dMap: The 'id' prop is NOT found or DUPLICATE, the map initialization might work incorrectly`)
-    }         
+    this.mapKey = props.id || "default"       
     this.callback = `callback_${this.mapKey}`    
-    window[this.callback] = () => {
-      if (this.mapDomRef) {        
-        let options = props.options
-        this.map = new window.map4d.Map(this.mapDomRef, options)
-        if (props.onMapReady) {
-          props.onMapReady(this.map)
-        }
-      } else {
-        console.error(`Map4dMap: map element is NOT found`)
-      }
-    }
     this.setMapDomRef = this.setMapDomRef.bind(this)
   }
 
@@ -45,33 +29,50 @@ class Map4dMap extends React.Component {
     this.mapDomRef = e
   }
 
-  componentWillUnmount() {    
-    Map4dMap.mapKeys.delete(this.mapKey)
-    if (this.mapScript != null) {
-      this.mapScript.remove()
-    }
-    this.map && this.map.destroy()
+  componentWillUnmount() {  
+    this.destroy()
   }
 
-  render() {
-    let callback = this.callback
-    let url = `https://api.map4d.vn/sdk/map/js?version=${this.props.version}&key=${this.props.accessKey}&callback=${callback}`    
+  destroy() {
+    delete window[this.callback]  
+    if (this.scriptElement != null) {
+      this.scriptElement.remove()
+    }
+    this.mapRef && this.mapRef.destroy()
+    this.url = null
+  }
+
+  createCallback() {
+    window[this.callback] = () => {
+      if (this.mapDomRef) {
+        let options = this.props.options
+        this.mapRef = new window.map4d.Map(this.mapDomRef, options)
+        if (this.props.onMapReady) {
+          this.props.onMapReady(this.mapRef, this.mapKey)
+        }
+      } else {
+        console.error(`Map4dMap: map element is NOT found`)
+      }
+    }
+  }
+
+  render() {    
+    let url = `https://api.map4d.vn/sdk/map/js?version=${this.props.version}&key=${this.props.accessKey}&callback=${this.callback}`    
     if (this.props.mapid) {
       url += `&mapId=${this.props.mapid}`
     }
     if (url != this.url) {
-      if (this.mapScript != null) {
-        this.mapScript.remove()
-      }
+      this.destroy()
+      this.createCallback()
       let script = addLibrary(url, this.mapKey)
       if (script) {
-        this.mapScript = script
+        this.scriptElement = script
       }
     }    
-    this.url = url    
+    this.url = url
     return (
       <div 
-      style={{width: '100%', height: '100%'}} 
+      style={{width: '100%', height: '100%', display: 'block'}} 
       id={`${this.mapKey}`} 
       ref={this.setMapDomRef}>
       </div>
