@@ -44,7 +44,7 @@ function App() {
     let marker = new map4d.Marker({
       position: centerMap,
       anchor: [0.5, 1.0],
-      label: new map4d.MarkerLabel({text: "Demo Marker", color: "0xFF00FF", fontSize: 12})
+      label: new map4d.MarkerLabel({text: "Demo Marker", color: "FF00FF", fontSize: 12})
     })
     // Thêm marker vào bản đồ
     marker.setMap(map)
