@@ -1,26 +1,28 @@
 var config = {
   entry: './main.js',
   output: {
-    path: './',
     filename: 'index.js'
   },
-
+  devtool: 'eval-cheap-module-source-map',
   devServer: {
-    inline: true,
-    port: 7777
+    static: "./",
+    open: true,
+    port: 7777,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015', 'react']
+        use: {
+          loader: "babel-loader"
         }
       }
-    ]
+    ],
   }
 }
 
