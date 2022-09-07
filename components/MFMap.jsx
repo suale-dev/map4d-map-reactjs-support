@@ -26,7 +26,7 @@ const createId = () => {
   return uuid;
 }
 
-class Map4dMap extends React.Component {
+class MFMap extends React.Component {
 
   constructor(props) {
     super(props)
@@ -67,7 +67,7 @@ class Map4dMap extends React.Component {
           map: this.mapRef
         })
       } else {
-        console.error(`Map4dMap: map element is NOT found`)
+        console.error(`MFMap: map element is NOT found`)
       }
     }
   }
@@ -102,8 +102,8 @@ class Map4dMap extends React.Component {
     );
   }
 }
-Map4dMap.contextType = Map4dContext
-Map4dMap.propTypes = {
+MFMap.contextType = Map4dContext
+MFMap.propTypes = {
   options: PropTypes.shape({
     center: PropTypes.any,
     zoom: PropTypes.number,
@@ -125,4 +125,4 @@ Map4dMap.propTypes = {
   onMapReady: PropTypes.func,
 };
 
-export default Map4dMap;
+export default MFMap;

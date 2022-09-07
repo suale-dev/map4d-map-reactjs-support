@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Map4dContext } from '../context';
 
-const Polyline = (props) => {
+const MFPolyline = (props) => {
     const {
         path,
         strokeWidth,
@@ -99,7 +99,7 @@ const Polyline = (props) => {
 
     return null
 }
-Polyline.propTypes = {
+MFPolyline.propTypes = {
     path: PropTypes.any.isRequired,
     strokeWidth: PropTypes.number,
     strokeColor: PropTypes.string,
@@ -114,4 +114,4 @@ Polyline.propTypes = {
     map: PropTypes.any,
     onCreated: PropTypes.func
 };
-export default Polyline
+export default MFPolyline
