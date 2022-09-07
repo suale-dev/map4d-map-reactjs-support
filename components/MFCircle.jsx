@@ -8,7 +8,7 @@ const MFCircle = (props) => {
         radius,
         fillColor,
         fillOpacity,
-        visible,
+        visible = true,
         strokeColor,
         strokeWidth,
         draggable,

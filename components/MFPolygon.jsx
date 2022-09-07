@@ -7,7 +7,7 @@ const MFPolygon = (props) => {
         paths,
         fillColor,
         fillOpacity,
-        visible,
+        visible = true,
         strokeColor,
         strokeWidth,
         draggable,
