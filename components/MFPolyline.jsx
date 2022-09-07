@@ -8,7 +8,7 @@ const MFPolyline = (props) => {
         strokeWidth,
         strokeColor,
         strokeOpacity,
-        visible,
+        visible = true,
         closed,
         draggable,
         zIndex,
@@ -51,7 +51,7 @@ const MFPolyline = (props) => {
 
     useEffect(() => {
         if (theMap) {
-            polylineRef.current?.setMap(theMap)         
+            polylineRef.current?.setMap(theMap)
         }
         return () => {
             polylineRef.current?.setMap(null)

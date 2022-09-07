@@ -2,9 +2,11 @@ import React from 'react';
 import {
   BrowserRouter, Navigate, NavLink, Outlet, Route, Routes
 } from "react-router-dom";
+import DemoBuilding from './pages/DemoBuilding.jsx';
 import DemoCircle from './pages/DemoCircle.jsx';
 import DemoMap4d from './pages/DemoMap4d.jsx';
 import DemoMarker from './pages/DemoMarker.jsx';
+import DemoPOI from './pages/DemoPOI.jsx';
 import DemoPolygon from './pages/DemoPolygon.jsx';
 import DemoPolyline from './pages/DemoPolyline.jsx';
 
@@ -38,6 +40,18 @@ const demoRouters = [
     name: "Demo Polygon",
     pathName: "/demo/polygon",
     element: <DemoPolygon />
+  },
+  {
+    path: "/demo/poi",
+    name: "Demo POI",
+    pathName: "/demo/poi",
+    element: <DemoPOI />
+  },
+  {
+    path: "/demo/building",
+    name: "Demo Building",
+    pathName: "/demo/building",
+    element: <DemoBuilding />
   }
 ]
 
