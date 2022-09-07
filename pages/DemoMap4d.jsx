@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import Map4dMap from "../components/Map4dMap.jsx"
+import MFMap from "../components/MFMap.jsx"
 
 const DemoMap4d = (props) => {
     const [maps, setMaps] = useState([])
@@ -65,7 +65,7 @@ const DemoMap4d = (props) => {
             {
                 maps.map(map => {
                     return (
-                        <Map4dMap
+                        <MFMap
                           key={map.key}
                           onMapReady={onMapReady}
                           options={{

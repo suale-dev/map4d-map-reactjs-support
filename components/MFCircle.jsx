@@ -2,17 +2,18 @@ import React, { useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Map4dContext } from '../context';
 
-const Polygon = (props) => {
+const MFCircle = (props) => {
     const {
-        paths,
+        center,
+        radius,
         fillColor,
         fillOpacity,
         visible,
         strokeColor,
         strokeWidth,
         draggable,
-        elevation,
         zIndex,
+        elevation,
         userInteractionEnabled,
         map,
         onCreated
@@ -20,20 +21,21 @@ const Polygon = (props) => {
 
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
-    const polygonRef = useRef()
+    const circleRef = useRef()
 
     useEffect(() => {
-        if (theMap && !polygonRef.current) {
+        if (theMap && !circleRef.current) {
             let option = {
-                paths: paths,
+                center: center || { lat: 10.793113, lng: 106.720739 },
+                radius: radius,
                 fillColor: fillColor,
                 fillOpacity: fillOpacity,
                 visible: visible,
                 strokeColor: strokeColor,
                 strokeWidth: strokeWidth,
                 draggable: draggable,
-                elevation: elevation,
                 zIndex: zIndex,
+                elevation: elevation,
                 userInteractionEnabled: userInteractionEnabled,
             }
             Object.keys(option).forEach(key => {
@@ -41,71 +43,75 @@ const Polygon = (props) => {
                     delete option[key]
                 }
             })
-            polygonRef.current = new map4d.Polygon(option)
-            polygonRef.current?.setMap(theMap)
-            onCreated && onCreated(polygonRef.current)
+            circleRef.current = new map4d.Circle(option)
+            circleRef.current?.setMap(theMap)
+            onCreated && onCreated(circleRef.current)
         }
     }, [theMap])
 
     useEffect(() => {
         if (theMap) {
-            polygonRef.current?.setMap(theMap)         
+            circleRef.current?.setMap(theMap)         
         }
         return () => {
-            polygonRef.current?.setMap(null)
+            circleRef.current?.setMap(null)
         }
     }, [theMap])
     useEffect(() => {
         return () => {
-            polygonRef.current?.setMap(null)
+            circleRef.current?.setMap(null)
         }
     }, [])
 
     useEffect(() => {
-        polygonRef.current?.setPaths(paths)
-    }, [paths])
+        circleRef.current?.setCenter(center)
+    }, [center])
     useEffect(() => {
-        polygonRef.current?.setFillColor(fillColor)
+        circleRef.current?.setRadius(radius)
+    }, [radius])
+    useEffect(() => {
+        circleRef.current?.setFillColor(fillColor)
     }, [fillColor])
     useEffect(() => {
-        polygonRef.current?.setFillOpacity(fillOpacity)
+        circleRef.current?.setFillOpacity(fillOpacity)
     }, [fillOpacity])
     useEffect(() => {
-        polygonRef.current?.setVisible(visible)
+        circleRef.current?.setVisible(visible)
     }, [visible])
     useEffect(() => {
-        polygonRef.current?.setStrokeColor(strokeColor)
+        circleRef.current?.setStrokeColor(strokeColor)
     }, [strokeColor])
     useEffect(() => {
-        polygonRef.current?.setStrokeWidth(strokeWidth)
+        circleRef.current?.setStrokeWidth(strokeWidth)
     }, [strokeWidth])
     useEffect(() => {
-        polygonRef.current?.setDraggable(draggable)
+        circleRef.current?.setDraggable(draggable)
     }, [draggable])
     useEffect(() => {
-        polygonRef.current?.setElevation(elevation)
-    }, [elevation])
-    useEffect(() => {
-        polygonRef.current?.setZIndex(zIndex)
+        circleRef.current?.setZIndex(zIndex)
     }, [zIndex])
     useEffect(() => {
-        polygonRef.current?.setUserInteraction(userInteractionEnabled)
+        circleRef.current?.setElevation(elevation)
+    }, [elevation])
+    useEffect(() => {
+        circleRef.current?.setUserInteraction(userInteractionEnabled)
     }, [userInteractionEnabled])
 
     return null
 }
-Polygon.propTypes = {
-    paths: PropTypes.any.isRequired,
+MFCircle.propTypes = {
+    center: PropTypes.any.isRequired,
+    radius: PropTypes.number.isRequired,
     fillColor: PropTypes.string,
     fillOpacity: PropTypes.number,
     visible: PropTypes.bool,
     strokeColor: PropTypes.string,
     strokeWidth: PropTypes.number,
-    draggable: PropTypes.number,
-    elevation: PropTypes.number,
+    draggable: PropTypes.bool,
     zIndex: PropTypes.number,
+    elevation: PropTypes.number,
     userInteractionEnabled: PropTypes.bool,
     map: PropTypes.any,
     onCreated: PropTypes.func
 };
-export default Polygon
+export default MFCircle

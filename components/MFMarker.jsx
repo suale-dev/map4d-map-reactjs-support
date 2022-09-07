@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Map4dContext } from '../context';
 
-const Marker = (props) => {
+const MFMarker = (props) => {
     const {
         position,
         visible = true,
@@ -120,7 +120,7 @@ const Marker = (props) => {
     }, [userInteractionEnabled])
     return null
 }
-Marker.propTypes = {
+MFMarker.propTypes = {
     position: PropTypes.any.isRequired,
     visible: PropTypes.bool,
     anchor: PropTypes.any,
@@ -139,4 +139,4 @@ Marker.propTypes = {
     map: PropTypes.any,
     onCreated: PropTypes.func
 };
-export default Marker
+export default MFMarker
