@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useRef } from 'react';
-import { Map4dContext } from '../context';
+import { Map4dContext, MarkerClusterContext } from '../context';
 
 const MFMarker = (props) => {
     const {
@@ -24,6 +24,8 @@ const MFMarker = (props) => {
     } = props
 
     const map4dContext = useContext(Map4dContext);
+    const markerClusterContext = useContext(MarkerClusterContext)
+
     const theMap = map || map4dContext.map
     const markerRef = useRef()
 
@@ -52,22 +54,32 @@ const MFMarker = (props) => {
                 }
             })
             markerRef.current = new map4d.Marker(option)
-            markerRef.current?.setMap(theMap)
+            if (!markerClusterContext?.addMarker) {
+                markerRef.current?.setMap(theMap)
+            }
             onCreated && onCreated(markerRef.current)
+            markerClusterContext?.addMarker && markerClusterContext?.addMarker(markerRef.current)
         }
     }, [theMap])
 
     useEffect(() => {
         if (theMap) {
-            markerRef.current?.setMap(theMap)        
+            if (!markerClusterContext?.addMarker) {
+                markerRef.current?.setMap(theMap)
+            }
         }
         return () => {
-            markerRef.current?.setMap(null)
+            if (!markerClusterContext?.addMarker) {
+                markerRef.current?.setMap(null)
+            }
         }
     }, [theMap])
     useEffect(() => {
         return () => {
-            markerRef.current?.setMap(null)
+            if (!markerClusterContext?.addMarker) {
+                markerRef.current?.setMap(null)
+            }
+            markerClusterContext?.removeMarker && markerClusterContext?.removeMarker(markerRef.current)
         }
     }, [])
 
