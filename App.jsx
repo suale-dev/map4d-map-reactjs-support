@@ -4,8 +4,10 @@ import {
 } from "react-router-dom";
 import DemoBuilding from './pages/DemoBuilding.jsx';
 import DemoCircle from './pages/DemoCircle.jsx';
+import DemoDirectionsRenderer from './pages/DemoDirectionsRenderer.jsx';
 import DemoMap4d from './pages/DemoMap4d.jsx';
 import DemoMarker from './pages/DemoMarker.jsx';
+import DemoMarkerCluster from './pages/DemoMarkerCluster.jsx';
 import DemoPOI from './pages/DemoPOI.jsx';
 import DemoPolygon from './pages/DemoPolygon.jsx';
 import DemoPolyline from './pages/DemoPolyline.jsx';
@@ -52,6 +54,18 @@ const demoRouters = [
     name: "Demo Building",
     pathName: "/demo/building",
     element: <DemoBuilding />
+  },
+  {
+    path: "/demo/marker-cluster",
+    name: "Demo Marker cluster",
+    pathName: "/demo/marker-cluster",
+    element: <DemoMarkerCluster />
+  },
+  {
+    path: "/demo/direction",
+    name: "Demo Directions Renderer",
+    pathName: "/demo/direction",
+    element: <DemoDirectionsRenderer />
   }
 ]
 
@@ -65,7 +79,7 @@ function App() {
           path='/demo'
           element={
             <>
-              <div style={{ display: "flex", gap:"10px" }}>
+              <div style={{ display: "flex", gap: "10px" }}>
                 {
                   demoRouters?.map(router => {
                     return (
