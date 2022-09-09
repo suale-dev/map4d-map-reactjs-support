@@ -20,7 +20,7 @@ const DemoPOI = (props) => {
                         zoom: 18,
                         controls: true
                     }}
-                    accessKey={"208e1c99aa440d8bc2847aafa3bc0669"}
+                    accessKey={demoConfig.key}
                     version={"2.3"} >
                     <MFPOI title={"Demo POI cafe"} type={"cafe"} position={post} />
                 </MFMap>

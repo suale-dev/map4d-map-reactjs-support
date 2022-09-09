@@ -19,7 +19,7 @@ const DemoMarker = (props) => {
                         center: { lat: 16.072163491469226, lng: 108.22690536081757 },
                         zoom: 15,
                     }}
-                    accessKey={"208e1c99aa440d8bc2847aafa3bc0669"}
+                    accessKey={demoConfig.key}
                     version={"2.3"} >
                     <MFMarker position={post}></MFMarker>
                 </Map4dMap>

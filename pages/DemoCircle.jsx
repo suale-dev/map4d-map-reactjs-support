@@ -21,7 +21,7 @@ const DemoCircle = (props) => {
                         zoom: 17,
                         controls: true
                     }}
-                    accessKey={"208e1c99aa440d8bc2847aafa3bc0669"}
+                    accessKey={demoConfig.key}
                     version={"2.3"} >
                     <MFCircle radius={radius} center={post}></MFCircle>
                 </MFMap>

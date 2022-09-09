@@ -53,7 +53,6 @@ const MFDirectionsRenderer = (props) => {
                     delete option[key]
                 }
             })
-            console.log(option)
             directionRef.current = new map4d.DirectionsRenderer(option)
             directionRef.current?.setMap(theMap)
             onCreated && onCreated(directionRef.current)

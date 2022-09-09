@@ -5,12 +5,14 @@ import {
 import DemoBuilding from './pages/DemoBuilding.jsx';
 import DemoCircle from './pages/DemoCircle.jsx';
 import DemoDirectionsRenderer from './pages/DemoDirectionsRenderer.jsx';
+import DemoGroundOverlay from './pages/DemoGroundOverlay.jsx';
 import DemoMap4d from './pages/DemoMap4d.jsx';
 import DemoMarker from './pages/DemoMarker.jsx';
 import DemoMarkerCluster from './pages/DemoMarkerCluster.jsx';
 import DemoPOI from './pages/DemoPOI.jsx';
 import DemoPolygon from './pages/DemoPolygon.jsx';
 import DemoPolyline from './pages/DemoPolyline.jsx';
+import DemoTileOverlay from './pages/DemoTileOverlay.jsx';
 
 const demoRouters = [
   {
@@ -66,6 +68,18 @@ const demoRouters = [
     name: "Demo Directions Renderer",
     pathName: "/demo/direction",
     element: <DemoDirectionsRenderer />
+  },
+  {
+    path: "/demo/tile-overlay",
+    name: "Demo Tile Overlay",
+    pathName: "/demo/tile-overlay",
+    element: <DemoTileOverlay />
+  },
+  {
+    path: "/demo/ground-overlay",
+    name: "Demo Ground Overlay",
+    pathName: "/demo/ground-overlay",
+    element: <DemoGroundOverlay />
   }
 ]
 
