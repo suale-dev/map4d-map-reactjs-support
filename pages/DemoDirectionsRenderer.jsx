@@ -46,7 +46,7 @@ const DemoDirectionsRenderer = (props) => {
                         zoom: 16,
                         controls: true
                     }}
-                    accessKey={"208e1c99aa440d8bc2847aafa3bc0669"}
+                    accessKey={demoConfig.key}
                     version={"2.4"} >
                     <MFDirectionsRenderer
                         routes={option.routes}

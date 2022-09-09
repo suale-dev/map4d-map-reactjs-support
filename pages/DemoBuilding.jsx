@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import MFBuilding from "../components/MFBuilding.jsx"
 import MFMap from "../components/MFMap.jsx"
-import MFPOI from "../components/MFPOI.jsx"
 
 const DemoBuilding = (props) => {
 
@@ -23,7 +22,7 @@ const DemoBuilding = (props) => {
                         bearing: 250,
                         controls: true
                     }}
-                    accessKey={"208e1c99aa440d8bc2847aafa3bc0669"}
+                    accessKey={demoConfig.key}
                     version={"2.3"} >
                     <MFBuilding
                         name={"User Building"}

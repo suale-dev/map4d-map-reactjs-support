@@ -9,6 +9,7 @@ const MFMarkerCluster = (props) => {
         radius = 100,
         zoomOnClick,
         map,
+        onCreated
     } = props
 
     const map4dContext = useContext(Map4dContext);
@@ -32,6 +33,7 @@ const MFMarkerCluster = (props) => {
             })
             markerClusterRef.current = new map4d.MarkerClusterer(markerRefs.current, option)
             markerClusterRef.current?.setMap(theMap)
+            onCreated && onCreated(markerClusterRef.current)
         }
     }
     const clusterContext = {
@@ -47,7 +49,9 @@ const MFMarkerCluster = (props) => {
     }
 
     useEffect(() => {
-        drawCluster()
+        if (theMap && !markerClusterRef.current) {
+            drawCluster()
+        }
     }, [theMap])
 
     useEffect(() => {
@@ -64,7 +68,9 @@ const MFMarkerCluster = (props) => {
         }
     }, [])
     useEffect(() => {
-        drawCluster()
+        if (theMap) {
+            drawCluster()
+        }
     }, [minZoom, maxZoom, radius])
     useEffect(() => {
         markerClusterRef.current?.setZoomOnClick(zoomOnClick)
@@ -82,5 +88,6 @@ MFMarkerCluster.propTypes = {
     radius: PropTypes.number,
     zoomOnClick: PropTypes.bool,
     map: PropTypes.any,
+    onCreated: PropTypes.func
 };
 export default MFMarkerCluster

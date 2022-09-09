@@ -19,7 +19,7 @@ const DemoMarkerCluster = (props) => {
                         zoom: 9,
                         controls: true
                     }}
-                    accessKey={"208e1c99aa440d8bc2847aafa3bc0669"}
+                    accessKey={demoConfig.key}
                     version={"2.3"} >
                     <MFMarkerCluster minZoom={0} maxZoom={10} radius={150} zoomOnClick>
                         {
