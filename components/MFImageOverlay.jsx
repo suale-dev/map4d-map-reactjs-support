@@ -2,11 +2,10 @@ import PropTypes from 'prop-types';
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext } from '../context';
 
-const MFGroundOverlay = (props) => {
+const MFImageOverlay = (props) => {
     const {
+        url,
         bounds,
-        getUrl,
-        override,
         visible = true,
         zIndex,
         opacity,
@@ -16,15 +15,14 @@ const MFGroundOverlay = (props) => {
 
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
-    const groundOverlayRef = useRef()
+    const imageOverlayRef = useRef()
 
 
     const reCreate = () => {
-        groundOverlayRef.current?.setMap(null)
+        imageOverlayRef.current?.setMap(null)
         let option = {
-            bounds,
-            getUrl: getUrl,
-            override,
+            url,
+            bounds: bounds,
             visible: visible,
             zIndex: zIndex,
             opacity: opacity
@@ -34,28 +32,28 @@ const MFGroundOverlay = (props) => {
                 delete option[key]
             }
         })
-        groundOverlayRef.current = new map4d.TileOverlay(option)
-        groundOverlayRef.current?.setMap(theMap)
-        onCreated && onCreated(groundOverlayRef.current)
+        imageOverlayRef.current = new map4d.ImageOverlay(option)
+        imageOverlayRef.current?.setMap(theMap)
+        onCreated && onCreated(imageOverlayRef.current)
     }
 
     useEffect(() => {
-        if (theMap && !groundOverlayRef.current) {
+        if (theMap && !imageOverlayRef.current) {
             reCreate()
         }
     }, [theMap])
 
     useEffect(() => {
         if (theMap) {
-            groundOverlayRef.current?.setMap(theMap)
+            imageOverlayRef.current?.setMap(theMap)
         }
         return () => {
-            groundOverlayRef.current?.setMap(null)
+            imageOverlayRef.current?.setMap(null)
         }
     }, [theMap])
     useEffect(() => {
         return () => {
-            groundOverlayRef.current?.setMap(null)
+            imageOverlayRef.current?.setMap(null)
         }
     }, [])
 
@@ -63,26 +61,22 @@ const MFGroundOverlay = (props) => {
         if (theMap) {
             reCreate()
         }
-    }, [bounds, getUrl, override])
+    }, [url, bounds, zIndex])
     useEffect(() => {
-        groundOverlayRef.current?.setVisible(visible)
+        imageOverlayRef.current?.setVisible(visible)
     }, [visible])
     useEffect(() => {
-        groundOverlayRef.current?.setZIndex(zIndex)
-    }, [zIndex])
-    useEffect(() => {
-        groundOverlayRef.current?.setOpacity(opacity)
+        imageOverlayRef.current?.setOpacity(opacity)
     }, [opacity])
     return null
 }
-MFGroundOverlay.propTypes = {
-    bounds: PropTypes.any.isRequired,
-    getUrl: PropTypes.func.isRequired,
-    override: PropTypes.bool,
+MFImageOverlay.propTypes = {
+    url: PropTypes.any.isRequired,
+    bounds: PropTypes.func.isRequired,
     visible: PropTypes.bool,
     zIndex: PropTypes.number,
     opacity: PropTypes.number,
     map: PropTypes.any,
     onCreated: PropTypes.func
 };
-export default MFGroundOverlay
+export default MFImageOverlay

@@ -1,7 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 import MFDirectionsRenderer from "../components/MFDirectionsRenderer.jsx"
 import MFMap from "../components/MFMap.jsx"
-import MFPolyline from "../components/MFPolyline.jsx"
 
 const option = {
     routes: [
