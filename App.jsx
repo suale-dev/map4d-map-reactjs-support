@@ -4,12 +4,15 @@ import {
 } from "react-router-dom";
 import DemoBuilding from './pages/DemoBuilding.jsx';
 import DemoCircle from './pages/DemoCircle.jsx';
+import DemoDataLayer from './pages/DemoDataLayer.jsx';
 import DemoDirectionsRenderer from './pages/DemoDirectionsRenderer.jsx';
 import DemoGroundOverlay from './pages/DemoGroundOverlay.jsx';
+import DemoImageOverlay from './pages/DemoImageOverlay.jsx';
 import DemoMap4d from './pages/DemoMap4d.jsx';
 import DemoMarker from './pages/DemoMarker.jsx';
 import DemoMarkerCluster from './pages/DemoMarkerCluster.jsx';
 import DemoPOI from './pages/DemoPOI.jsx';
+import DemoPOIOverlay from './pages/DemoPOIOverlay.jsx';
 import DemoPolygon from './pages/DemoPolygon.jsx';
 import DemoPolyline from './pages/DemoPolyline.jsx';
 import DemoTileOverlay from './pages/DemoTileOverlay.jsx';
@@ -80,6 +83,24 @@ const demoRouters = [
     name: "Demo Ground Overlay",
     pathName: "/demo/ground-overlay",
     element: <DemoGroundOverlay />
+  },
+  {
+    path: "/demo/image-overlay",
+    name: "Demo Image Overlay",
+    pathName: "/demo/image-overlay",
+    element: <DemoImageOverlay />
+  },
+  {
+    path: "/demo/poi-overlay",
+    name: "Demo POI Overlay",
+    pathName: "/demo/poi-overlay",
+    element: <DemoPOIOverlay />
+  },
+  {
+    path: "/demo/data-layer",
+    name: "Demo Data Layer",
+    pathName: "/demo/data-layer",
+    element: <DemoDataLayer />
   }
 ]
 

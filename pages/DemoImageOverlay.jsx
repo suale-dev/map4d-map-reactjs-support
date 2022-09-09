@@ -1,15 +1,13 @@
 import React from "react"
+import MFImageOverlay from "../components/MFImageOverlay.jsx"
 import MFMap from "../components/MFMap.jsx"
-import MFTileOverlay from "../components/MFTileOverlay.jsx"
 
 let options = {
-    getUrl: function (x, y, zoom, is3dMode) {
-        return `https://tile.openstreetmap.de/${zoom}/${x}/${y}.png`
-    },
-    visible: true,
+    url: `https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg?1535749917189`,
+    bounds: [{lng: 108.214421, lat: 16.061733}, {lng: 108.23086738586424, lat: 16.075630202564316}],
     zIndex: 1
-}
-const DemoTileOverlay = (props) => {
+  }
+const DemoImageOverlay = (props) => {
     return (
         <>
             <div style={{ width: '80%', height: '400px' }}>
@@ -21,9 +19,10 @@ const DemoTileOverlay = (props) => {
                     }}
                     accessKey={demoConfig.key}
                     version={"2.4"} >
-                    <MFTileOverlay
-                        getUrl={options.getUrl}
-                        zIndex={1}
+                    <MFImageOverlay
+                        url={options.url}
+                        bounds={options.bounds}
+                        zIndex={options.zIndex}
                     />
                 </MFMap>
             </div>
@@ -31,7 +30,7 @@ const DemoTileOverlay = (props) => {
     )
 }
 
-DemoTileOverlay.propTypes = {
+DemoImageOverlay.propTypes = {
 };
 
-export default DemoTileOverlay
+export default DemoImageOverlay
