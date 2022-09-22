@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext } from '../context';
 

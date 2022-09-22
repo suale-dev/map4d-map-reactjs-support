@@ -29,7 +29,8 @@ interface MapProps {
   mapid?: string
   options: map4d.MapOptions,
   version: string
-  accessKey: string
+  accessKey: string,
+  environment?: "dev" | "test" | undefined | null,
   onMapReady: (map: map4d.Map, key?: string) => void
 }
 
@@ -86,7 +87,7 @@ class MFMap extends React.Component<MapProps, any> {
   }
 
   render() {
-    let url = `https://api.map4d.vn/sdk/map/js?version=${this.props.version}&key=${this.props.accessKey}&callback=${this.callback}`
+    let url = `https://api${this.props.environment ? "-" + this.props.environment : ""}.map4d.vn/sdk/map/js?version=${this.props.version}&key=${this.props.accessKey}&callback=${this.callback}`
     if (this.props.mapid) {
       url += `&mapId=${this.props.mapid}`
     }
