@@ -2,8 +2,26 @@ import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext, MarkerClusterContext } from '../context';
 
 interface MarkerProps extends map4d.MarkerOptions {
-    map?: map4d.Map
-    onCreated: (marker: map4d.Marker) => void
+    position: any
+    visible?: boolean
+    anchor?: any
+    labelAnchor?: any
+    icon?: any
+    elevation?: number
+    rotation?: number
+    title?: string
+    snippet?: string
+    windowAnchor?: any
+    zIndex?: number
+    label?: any
+    draggable?: boolean
+    iconView?: string | Node
+    userInteractionEnabled?: boolean
+    map?: any,
+    onClick: (marker: any) => void
+    onCreated: (marker: any) => void
+    onRightClick: (marker: any) => void
+    onDragEnd: (marker: any) => void
 }
 
 const MFMarker = (props: MarkerProps) => {
@@ -24,14 +42,15 @@ const MFMarker = (props: MarkerProps) => {
         iconView,
         userInteractionEnabled,
         map,
-        onCreated
+        onCreated,
+        onClick
     } = props
 
     const map4dContext = useContext(Map4dContext);
     const markerClusterContext = useContext(MarkerClusterContext)
 
     const theMap = map || map4dContext.map
-    const markerRef = useRef<map4d.Marker>()
+    const markerRef = useRef<any>()
 
     useEffect(() => {
         if (theMap && !markerRef.current) {
@@ -59,8 +78,11 @@ const MFMarker = (props: MarkerProps) => {
             })
             markerRef.current = new map4d.Marker(option)
             if (!markerClusterContext?.addMarker) {
-                markerRef.current?.setMap(theMap)
+                markerRef.current.setMap(theMap)
             }
+            markerRef.current.onClick = onClick
+            markerRef.current.onRightClick = props.onRightClick
+            markerRef.current.onDragEnd = props.onDragEnd
             onCreated && onCreated(markerRef.current)
             markerClusterContext?.addMarker && markerClusterContext?.addMarker(markerRef.current)
         }

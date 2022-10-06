@@ -1,5 +1,6 @@
 import React from 'react';
 import { Map4dContext } from '../context';
+import { MapEventEnum } from '../enum';
 
 export function addLibrary(url: string, id: string) {
   let scriptId = `script_${id}`
@@ -24,14 +25,33 @@ const createId = () => {
   });
   return uuid;
 }
-
+interface MapOptions {
+  center?: any
+  zoom?: number
+  minZoom?: number
+  maxZoom?: number
+  maxNativeZoom?: number
+  geolocate?: boolean
+  tilt?: number
+  bearing?: number
+  controls?: boolean
+  mapType?: any
+  controlOptions?: any
+  restrictionBounds?: any
+  shouldChangeMapMode?: Function
+  cooperativeGestures?: boolean
+}
 interface MapProps {
   mapid?: string
-  options: map4d.MapOptions,
+  options: MapOptions,
   version: string
   accessKey: string,
   environment?: "dev" | "test" | undefined | null,
-  onMapReady: (map: map4d.Map, key?: string) => void
+  onMapReady: (map: any, key?: string) => void
+  onClickLocation?: (args: any) => void
+  onRightClickLocation?: (args: any) => void
+  onCameraChanging?: (args: any) => void
+  onTilesLoaded?: (args: any) => void
 }
 
 class MFMap extends React.Component<MapProps, any> {
@@ -42,6 +62,7 @@ class MFMap extends React.Component<MapProps, any> {
   mapRef: map4d.Map;
   scriptElement: any;
   url: string | null;
+  events = [] as any[]
   constructor(props: MapProps) {
     super(props)
     this.state = {
@@ -65,8 +86,63 @@ class MFMap extends React.Component<MapProps, any> {
     if (this.scriptElement != null) {
       this.scriptElement.remove()
     }
+    this.events?.forEach((t: any) => {
+      t?.remove()
+    })
     this.mapRef?.destroy && this.mapRef.destroy()
     this.url = null
+  }
+
+  registerEvent() {
+
+    let eventClickMarker = this.mapRef?.addListener(MapEventEnum.click, (args: any) => {
+      args.marker?.onClick && args.marker?.onClick()
+    }, {
+      marker: true
+    })
+    let eventRightClickMarker = this.mapRef?.addListener(MapEventEnum.rightClick, (args: any) => {
+      args.marker?.onRightClick && args.marker?.onRightClick()
+    }, {
+      marker: true
+    })
+    let eventDragEndMarker = this.mapRef?.addListener(MapEventEnum.dragEnd, (args: any) => {
+      args.marker?.onDragEnd && args.marker?.onDragEnd()
+    }, {
+      marker: true
+    })
+    this.events.push([eventClickMarker, eventRightClickMarker, eventDragEndMarker])
+    if (this.props.onClickLocation) {
+      let onClickLocation = this.mapRef?.addListener(MapEventEnum.click, (args: any) => {
+        this.props.onClickLocation && this.props.onClickLocation(args)
+      }, {
+        location: true
+      })
+      this.events.push(onClickLocation)
+    }
+    if (this.props.onRightClickLocation) {
+      let onRightClickLocation = this.mapRef?.addListener(MapEventEnum.rightClick, (args: any) => {
+        this.props.onRightClickLocation && this.props.onRightClickLocation(args)
+      }, {
+        location: true
+      })
+      this.events.push(onRightClickLocation)
+    }
+    if (this.props.onTilesLoaded) {
+      let onTilesLoaded = this.mapRef?.addListener(MapEventEnum.tilesLoaded, (args: any) => {
+        this.props.onTilesLoaded && this.props.onTilesLoaded(args)
+      }, {
+        location: true
+      })
+      this.events.push(onTilesLoaded)
+    }
+    if (this.props.onCameraChanging) {
+      let onCameraChanging = this.mapRef?.addListener(MapEventEnum.cameraChanging, (args: any) => {
+        this.props.onCameraChanging && this.props.onCameraChanging(args)
+      }, {
+        location: true
+      })
+      this.events.push(onCameraChanging)
+    }
   }
 
   createCallback() {
@@ -77,6 +153,8 @@ class MFMap extends React.Component<MapProps, any> {
         if (this.props.onMapReady) {
           this.props.onMapReady(this.mapRef, this.mapKey)
         }
+        this.registerEvent()
+
         this.setState({
           map: this.mapRef
         })
@@ -100,8 +178,9 @@ class MFMap extends React.Component<MapProps, any> {
       }
     }
     this.url = url
-    let newContext = { ...this.context }
-    newContext.map = this.state.map
+    let newContext = {
+      map: this.state.map
+    }
     return (
       <Map4dContext.Provider value={newContext}>
         <div
