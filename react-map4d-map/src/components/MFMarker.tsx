@@ -1,12 +1,17 @@
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext, MarkerClusterContext } from '../context';
 
-interface MarkerProps extends map4d.MarkerOptions {
+interface IconProps {
+    width: number,
+    height: number,
+    url: string
+}
+interface MarkerProps {
     position: any
     visible?: boolean
     anchor?: any
     labelAnchor?: any
-    icon?: any
+    icon?: IconProps
     elevation?: number
     rotation?: number
     title?: string
@@ -18,6 +23,9 @@ interface MarkerProps extends map4d.MarkerOptions {
     iconView?: string | Node
     userInteractionEnabled?: boolean
     map?: any,
+    infoWindow?: string | Node
+    infoContents?: string | Node
+    showInfoWindow?: boolean
     onClick: (marker: any) => void
     onCreated: (marker: any) => void
     onRightClick: (marker: any) => void
@@ -59,7 +67,6 @@ const MFMarker = (props: MarkerProps) => {
                 visible: visible,
                 anchor: anchor,
                 labelAnchor: labelAnchor,
-                icon: icon,
                 elevation: elevation,
                 rotation: rotation,
                 title: title,
@@ -70,15 +77,28 @@ const MFMarker = (props: MarkerProps) => {
                 draggable: draggable,
                 iconView: iconView,
                 userInteractionEnabled: userInteractionEnabled
-            }
+            } as map4d.MarkerOptions
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
                     delete option[key]
                 }
             })
+            if (icon) {
+                let iconT = new map4d.Icon(icon.width, icon.height, icon.url)
+                option.icon = iconT
+            }
             markerRef.current = new map4d.Marker(option)
+            if (props.infoWindow != undefined) {
+                markerRef.current.setInfoWindow(props.infoWindow)
+            }
+            if (props.infoContents != undefined) {
+                markerRef.current.setInfoContents(props.infoContents)
+            }
             if (!markerClusterContext?.addMarker) {
                 markerRef.current.setMap(theMap)
+            }
+            if (props.showInfoWindow != undefined) {
+                props.showInfoWindow ? markerRef.current.showInfoWindow() : markerRef.current.hideInfoWindow()
             }
             markerRef.current.onClick = onClick
             markerRef.current.onRightClick = props.onRightClick
@@ -156,6 +176,24 @@ const MFMarker = (props: MarkerProps) => {
     useEffect(() => {
         userInteractionEnabled != undefined && markerRef.current?.setUserInteraction(userInteractionEnabled)
     }, [userInteractionEnabled])
+
+    useEffect(() => {
+        icon != undefined && markerRef.current?.setIcon(new map4d.Icon(icon.width, icon.height, icon.url))
+    }, [icon])
+
+    useEffect(() => {
+        props.infoWindow != undefined && markerRef.current?.setInfoWindow(props.infoWindow)
+    }, [props.infoWindow])
+
+    useEffect(() => {
+        props.infoContents != undefined && markerRef.current?.setInfoContents(props.infoContents)
+    }, [props.infoContents])
+
+    useEffect(() => {
+        if (props.showInfoWindow != undefined) {
+            props.showInfoWindow ? markerRef.current.showInfoWindow() : markerRef.current.hideInfoWindow()
+        }
+    }, [props.showInfoWindow])
     return null
 }
 export default MFMarker
