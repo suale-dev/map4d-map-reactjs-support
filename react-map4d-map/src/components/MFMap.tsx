@@ -110,7 +110,7 @@ class MFMap extends React.Component<MapProps, any> {
     }, {
       marker: true
     })
-    this.events.push([eventClickMarker, eventRightClickMarker, eventDragEndMarker])
+    this.events = this.events.concat([eventClickMarker, eventRightClickMarker, eventDragEndMarker])
     if (this.props.onClickLocation) {
       let onClickLocation = this.mapRef?.addListener(MapEventEnum.click, (args: any) => {
         this.props.onClickLocation && this.props.onClickLocation(args)
