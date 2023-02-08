@@ -1,7 +1,11 @@
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext } from '../context';
 
-interface TileOverlayProps extends map4d.TileOverlayOptions {
+interface TileOverlayProps {
+    getUrl: Function
+    visible?: boolean
+    zIndex?: number
+    opacity?: number
     map?: map4d.Map,
     onCreated?: (tileOverlay: map4d.TileOverlay) => void
 }

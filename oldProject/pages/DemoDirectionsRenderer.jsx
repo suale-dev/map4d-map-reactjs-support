@@ -1,6 +1,5 @@
 import React from "react"
-import MFDirectionsRenderer from "../components/MFDirectionsRenderer.jsx"
-import MFMap from "../components/MFMap.jsx"
+import { MFDirectionsRenderer, MFMap } from "react-map4d-map"
 
 const option = {
     routes: [
@@ -48,6 +47,7 @@ const DemoDirectionsRenderer = (props) => {
                     accessKey={demoConfig.key}
                     version={"2.4"} >
                     <MFDirectionsRenderer
+                        onHover={() => { console.log("hoverRenderer") }}
                         routes={option.routes}
                         originMarkerOptions={option.originMarkerOptions}
                         destinationMarkerOptions={option.destinationMarkerOptions}

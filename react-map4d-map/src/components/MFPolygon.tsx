@@ -1,9 +1,20 @@
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext } from '../context';
 
-interface PolygonProps extends map4d.PolygonOptions {
+interface PolygonProps {
+    paths: any[][]
+    fillColor?: string
+    fillOpacity?: number
+    visible?: boolean
+    strokeColor?: string
+    strokeWidth?: number
+    draggable?: boolean
+    zIndex?: number
+    elevation?: number
+    userInteractionEnabled?: boolean
     map?: map4d.Map,
-    onCreated: (polygon: map4d.Polygon) => void
+    onCreated?: (polygon: map4d.Polygon) => void
+    onHover?: (polygon: any) => void
 }
 
 const MFPolygon = (props: PolygonProps) => {
@@ -24,7 +35,7 @@ const MFPolygon = (props: PolygonProps) => {
 
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
-    const polygonRef = useRef<map4d.Polygon>()
+    const polygonRef = useRef<any>()
 
     useEffect(() => {
         if (theMap && !polygonRef.current) {
@@ -47,6 +58,7 @@ const MFPolygon = (props: PolygonProps) => {
             })
             polygonRef.current = new map4d.Polygon(option)
             polygonRef.current?.setMap(theMap)
+            polygonRef.current.onHover = props.onHover
             onCreated && onCreated(polygonRef.current)
         }
     }, [theMap])

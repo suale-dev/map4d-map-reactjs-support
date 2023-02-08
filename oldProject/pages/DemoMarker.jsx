@@ -20,7 +20,7 @@ const DemoMarker = (props) => {
                     }}
                     accessKey={demoConfig.key}
                     version={"2.3"} >
-                    <MFMarker onClick={() => { console.log("sdfs") }} position={post}></MFMarker>
+                    <MFMarker onHover={() => { console.log("hoverMarker") }} position={post}></MFMarker>
                     <MFMarker onClick={() => { console.log("sdfs2") }} position={{ lat: 16.078500, lng: 108.221500 }}></MFMarker>
                     <MFMarker snippet="adsd" title="ád" label={"test"} onDragEnd={() => { console.log("drag") }} draggable={true} onClick={() => { console.log("sdfs4") }} position={{ lat: 16.088500, lng: 108.221500 }}></MFMarker>
                 </MFMap>

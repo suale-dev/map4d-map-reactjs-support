@@ -45,7 +45,7 @@ const MFBuilding = (props: BuildingProps) => {
     const buildingRef = useRef(null as unknown as map4d.Building)
 
     useEffect(() => {
-        if (theMap && !buildingRef.current) {
+        if (theMap && !buildingRef.current && (coordinates && coordinates?.length > 0 || model)) {
             let option = {
                 position: position || { lat: 10.793113, lng: 106.720739 },
                 name: name,
@@ -71,7 +71,7 @@ const MFBuilding = (props: BuildingProps) => {
             buildingRef.current?.setMap(theMap)
             onCreated && onCreated(buildingRef.current)
         }
-    }, [theMap])
+    }, [theMap, position, coordinates, model])
 
     useEffect(() => {
         if (theMap) {

@@ -24,7 +24,6 @@ const DemoBuilding = (props) => {
                     accessKey={demoConfig.key}
                     version={"2.3"} >
                     <MFBuilding
-                        on
                         name="test"
                         model={"https://sw-hcm-1.vinadata.vn/v1/AUTH_d0ecabcbdcd74f6aa6ac9a5da528eb78/sdk/models/5d26e774bb542caaf439e605.obj"}
                         text={"https://sw-hcm-1.vinadata.vn/v1/AUTH_d0ecabcbdcd74f6aa6ac9a5da528eb78/sdk/textures/5d26e775bb542caaf439e607.png"}

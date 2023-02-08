@@ -4,7 +4,7 @@ import { VariableTool } from '../tool';
 
 interface CircleProps {
     center: map4d.ILatLng
-    radius?: number
+    radius: number
     fillColor?: string
     fillOpacity?: number
     visible?: boolean

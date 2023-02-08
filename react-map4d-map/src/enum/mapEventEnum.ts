@@ -3,5 +3,6 @@ export const enum MapEventEnum {
     rightClick = "rightClick",
     dragEnd = "dragEnd",
     cameraChanging = "cameraChanging",
-    tilesLoaded = "tilesLoaded"
+    tilesLoaded = "tilesLoaded",
+    hover = "hover"
 }

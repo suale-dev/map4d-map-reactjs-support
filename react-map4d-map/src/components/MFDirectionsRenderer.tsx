@@ -29,8 +29,9 @@ interface DirectionsRendererProps {
 
     onMarkerDragEnd?: Function,
 
-    map: map4d.Map,
-    onCreated: (directionsRenderer?: map4d.DirectionsRenderer) => void
+    map?: map4d.Map,
+    onCreated?: (directionsRenderer?: map4d.DirectionsRenderer) => void
+    onHover?: (directions: any) => void
 }
 
 const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
@@ -57,7 +58,7 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
 
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
-    const directionRef = useRef<map4d.DirectionsRenderer>()
+    const directionRef = useRef<any>()
 
     useEffect(() => {
         if (theMap && !directionRef.current) {
@@ -86,6 +87,7 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
             })
             directionRef.current = new map4d.DirectionsRenderer(option)
             directionRef.current?.setMap(theMap)
+            directionRef.current.onHover = props.onHover
             onCreated && onCreated(directionRef.current)
         }
     }, [theMap])

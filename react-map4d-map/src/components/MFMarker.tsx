@@ -26,10 +26,11 @@ interface MarkerProps {
     infoWindow?: string | Node
     infoContents?: string | Node
     showInfoWindow?: boolean
-    onClick: (marker: any) => void
-    onCreated: (marker: any) => void
-    onRightClick: (marker: any) => void
-    onDragEnd: (marker: any) => void
+    onClick?: (marker: any) => void
+    onCreated?: (marker: any) => void
+    onRightClick?: (marker: any) => void
+    onDragEnd?: (marker: any) => void
+    onHover?: (marker: any) => void
 }
 
 const MFMarker = (props: MarkerProps) => {
@@ -103,6 +104,7 @@ const MFMarker = (props: MarkerProps) => {
             markerRef.current.onClick = onClick
             markerRef.current.onRightClick = props.onRightClick
             markerRef.current.onDragEnd = props.onDragEnd
+            markerRef.current.onHover = props.onHover
             onCreated && onCreated(markerRef.current)
             markerClusterContext?.addMarker && markerClusterContext?.addMarker(markerRef.current)
         }

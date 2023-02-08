@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Map4dContext } from '../context';
 import { MapEventEnum } from '../enum';
 
@@ -47,154 +47,175 @@ interface MapProps {
   version: string
   accessKey: string,
   environment?: "dev" | "test" | undefined | null,
-  onMapReady: (map: any, key?: string) => void
+  sdkDomain?: string | null
+  onMapReady?: (map: any, key?: string) => void
   onClickLocation?: (args: any) => void
   onRightClickLocation?: (args: any) => void
   onCameraChanging?: (args: any) => void
   onTilesLoaded?: (args: any) => void
+  children?: any
 }
 
-class MFMap extends React.Component<MapProps, any> {
+const MFMap = (props: MapProps) => {
 
-  mapKey: string;
-  callback: string;
-  mapDomRef: any;
-  mapRef: map4d.Map;
-  scriptElement: any;
-  url: string | null;
-  events = [] as any[]
-  constructor(props: MapProps) {
-    super(props)
-    this.state = {
-      map: null
+  const callback = useRef(`callback`)
+  const mapDomRef = useRef<any>()
+  const mapRef = useRef<map4d.Map>()
+  const scriptElement = useRef<HTMLScriptElement>()
+  const url = useRef<string>()
+  const events = useRef<any[]>([])
+
+  const [map, setMap] = useState<map4d.Map>()
+
+
+  useEffect(() => {
+    const id = createId()
+    callback.current = `callback_${id}`
+    const createCallback = () => {
+      window[callback.current] = () => {
+        if (mapDomRef.current) {
+          let options = props.options
+          mapRef.current = new window.map4d.Map(mapDomRef.current, options)
+          if (props.onMapReady) {
+            props.onMapReady(mapRef.current, id)
+          }
+          registerEvent()
+          setMap(mapRef.current)
+        } else {
+          console.error(`MFMap: map element is NOT found`)
+        }
+      }
     }
-    this.mapKey = createId()
-    this.callback = `callback_${this.mapKey}`
-    this.setMapDomRef = this.setMapDomRef.bind(this)
-  }
-
-  setMapDomRef(e: any) {
-    this.mapDomRef = e
-  }
-
-  componentWillUnmount() {
-    this.destroy()
-  }
-
-  destroy() {
-    delete window[this.callback]
-    if (this.scriptElement != null) {
-      this.scriptElement.remove()
+    let domain = `https://api${props.environment ? "-" + props.environment : ""}.map4d.vn`
+    if (props.sdkDomain) {
+      domain = props.sdkDomain
     }
-    this.events?.forEach((t: any) => {
-      t?.remove()
-    })
-    this.mapRef?.destroy && this.mapRef.destroy()
-    this.url = null
-  }
+    let urlNew = `${domain}/sdk/map/js?version=${props.version}&key=${props.accessKey}&callback=${callback.current}`
+    if (props.mapid) {
+      urlNew += `&mapId=${props.mapid}`
+    }
+    createCallback()
+    let script = addLibrary(urlNew, id)
+    if (script) {
+      scriptElement.current = script
+    }
+    url.current = urlNew
+    return () => {
+      const destroy = () => {
+        delete window[callback.current]
+        if (scriptElement.current != null) {
+          scriptElement.current.remove()
+        }
+        events.current?.forEach((t: any) => {
+          t?.remove()
+        })
+        mapRef.current?.destroy()
+        url.current = undefined
+      }
+      destroy()
+    }
+  }, [props.environment, props.version, props.accessKey])
 
-  registerEvent() {
-
-    let eventClickMarker = this.mapRef?.addListener(MapEventEnum.click, (args: any) => {
+  const registerEvent = () => {
+    let eventClickMarker = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
       args.marker?.onClick && args.marker?.onClick()
     }, {
       marker: true
     })
-    let eventRightClickMarker = this.mapRef?.addListener(MapEventEnum.rightClick, (args: any) => {
+    let eventRightClickMarker = mapRef.current?.addListener(MapEventEnum.rightClick, (args: any) => {
       args.marker?.onRightClick && args.marker?.onRightClick()
     }, {
       marker: true
     })
-    let eventDragEndMarker = this.mapRef?.addListener(MapEventEnum.dragEnd, (args: any) => {
+    let eventDragEndMarker = mapRef.current?.addListener(MapEventEnum.dragEnd, (args: any) => {
       args.marker?.onDragEnd && args.marker?.onDragEnd()
     }, {
       marker: true
     })
-    this.events = this.events.concat([eventClickMarker, eventRightClickMarker, eventDragEndMarker])
-    if (this.props.onClickLocation) {
-      let onClickLocation = this.mapRef?.addListener(MapEventEnum.click, (args: any) => {
-        this.props.onClickLocation && this.props.onClickLocation(args)
+
+    let eventHoverMarker = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+      args.marker?.onHover && args.marker?.onHover()
+    }, {
+      marker: true
+    })
+
+    let eventHoverPolygon = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+      args.polygon?.onHover && args.polygon?.onHover()
+    }, {
+      polygon: true
+    })
+
+    let eventHoverPolyline = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+      args.polyline?.onHover && args.polyline?.onHover()
+    }, {
+      polyline: true
+    })
+
+    let eventHoverDirection= mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+      args.renderer?.onHover && args.renderer?.onHover()
+    }, {
+      directions: true
+    })
+
+    events.current = events.current.concat([
+      eventClickMarker,
+      eventRightClickMarker,
+      eventDragEndMarker,
+      eventHoverMarker,
+      eventHoverPolygon,
+      eventHoverPolyline,
+      eventHoverDirection
+    ])
+    if (props.onClickLocation) {
+      let onClickLocation = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
+        props.onClickLocation && props.onClickLocation(args)
       }, {
         location: true
       })
-      this.events.push(onClickLocation)
+      events.current.push(onClickLocation)
     }
-    if (this.props.onRightClickLocation) {
-      let onRightClickLocation = this.mapRef?.addListener(MapEventEnum.rightClick, (args: any) => {
-        this.props.onRightClickLocation && this.props.onRightClickLocation(args)
+    if (props.onRightClickLocation) {
+      let onRightClickLocation = mapRef.current?.addListener(MapEventEnum.rightClick, (args: any) => {
+        props.onRightClickLocation && props.onRightClickLocation(args)
       }, {
         location: true
       })
-      this.events.push(onRightClickLocation)
+      events.current.push(onRightClickLocation)
     }
-    if (this.props.onTilesLoaded) {
-      let onTilesLoaded = this.mapRef?.addListener(MapEventEnum.tilesLoaded, (args: any) => {
-        this.props.onTilesLoaded && this.props.onTilesLoaded(args)
+    if (props.onTilesLoaded) {
+      let onTilesLoaded = mapRef.current?.addListener(MapEventEnum.tilesLoaded, (args: any) => {
+        props.onTilesLoaded && props.onTilesLoaded(args)
       }, {
         location: true
       })
-      this.events.push(onTilesLoaded)
+      events.current.push(onTilesLoaded)
     }
-    if (this.props.onCameraChanging) {
-      let onCameraChanging = this.mapRef?.addListener(MapEventEnum.cameraChanging, (args: any) => {
-        this.props.onCameraChanging && this.props.onCameraChanging(args)
+    if (props.onCameraChanging) {
+      let onCameraChanging = mapRef.current?.addListener(MapEventEnum.cameraChanging, (args: any) => {
+        props.onCameraChanging && props.onCameraChanging(args)
       }, {
         location: true
       })
-      this.events.push(onCameraChanging)
+      events.current.push(onCameraChanging)
     }
   }
-
-  createCallback() {
-    window[this.callback] = () => {
-      if (this.mapDomRef) {
-        let options = this.props.options
-        this.mapRef = new window.map4d.Map(this.mapDomRef, options)
-        if (this.props.onMapReady) {
-          this.props.onMapReady(this.mapRef, this.mapKey)
-        }
-        this.registerEvent()
-
-        this.setState({
-          map: this.mapRef
-        })
-      } else {
-        console.error(`MFMap: map element is NOT found`)
+  let newContext = {
+    map: map
+  }
+  const refDiv = (r: any) => {
+    mapDomRef.current = r
+  }
+  return (
+    <Map4dContext.Provider value={newContext}>
+      <div
+        style={{ width: '100%', height: '100%', display: 'block' }}
+        ref={refDiv}>
+      </div>
+      {
+        props.children
       }
-    }
-  }
-
-  render() {
-    let url = `https://api${this.props.environment ? "-" + this.props.environment : ""}.map4d.vn/sdk/map/js?version=${this.props.version}&key=${this.props.accessKey}&callback=${this.callback}`
-    if (this.props.mapid) {
-      url += `&mapId=${this.props.mapid}`
-    }
-    if (url != this.url) {
-      this.destroy()
-      this.createCallback()
-      let script = addLibrary(url, this.mapKey)
-      if (script) {
-        this.scriptElement = script
-      }
-    }
-    this.url = url
-    let newContext = {
-      map: this.state.map
-    }
-    return (
-      <Map4dContext.Provider value={newContext}>
-        <div
-          style={{ width: '100%', height: '100%', display: 'block' }}
-          id={`${this.mapKey}`}
-          ref={this.setMapDomRef}>
-        </div>
-        {
-          this.props.children
-        }
-      </Map4dContext.Provider>
-    );
-  }
+    </Map4dContext.Provider>
+  );
 }
-MFMap.contextType = Map4dContext
 
 export default MFMap;

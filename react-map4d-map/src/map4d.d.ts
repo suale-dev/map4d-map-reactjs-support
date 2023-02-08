@@ -531,7 +531,6 @@ declare module map4d {
     draggable?: boolean
     zIndex?: number
     elevation?: number
-
     userInteractionEnabled?: boolean
   }
 

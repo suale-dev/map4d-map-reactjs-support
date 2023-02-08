@@ -3,8 +3,8 @@ import { Map4dContext, MarkerClusterContext } from '../context';
 
 interface MarkerClusterProps extends map4d.MarkerClusterOptions {
     map?: map4d.Map,
-    onCreated: (markerCluster: map4d.MarkerClusterer) => void,
-    children: any
+    onCreated?: (markerCluster: map4d.MarkerClusterer) => void,
+    children?: any
 }
 
 const MFMarkerCluster = (props: MarkerClusterProps) => {

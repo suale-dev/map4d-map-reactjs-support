@@ -1,6 +1,5 @@
 import React, { useState } from "react"
-import MFMap from "../components/MFMap.jsx"
-import MFPolyline from "../components/MFPolyline.jsx"
+import { MFMap, MFPolyline } from "react-map4d-map"
 
 const DemoPolyline = (props) => {
 
@@ -28,8 +27,8 @@ const DemoPolyline = (props) => {
                         controls: true
                     }}
                     accessKey={demoConfig.key}
-                    version={"2.3"} >
-                    <MFPolyline strokeColor={"#ff0000"} strokeWidth={10} path={post} />
+                    version={"2.4"} >
+                    <MFPolyline onHover={() => { console.log("hoverPolyline") }} strokeColor={"#ff0000"} strokeWidth={10} path={post} />
                 </MFMap>
             </div>
         </>

@@ -1,9 +1,21 @@
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext } from '../context';
 
-interface PolylineProps extends map4d.PolylineOptions {
-    map?: map4d.Map,
+interface PolylineProps {
+    path: any[]
+    strokeWidth: number
+    strokeColor?: string
+    strokeOpacity?: number
+    visible?: boolean
+    closed?: boolean
+    draggable?: boolean
+    zIndex?: number
+    elevation?: number
+    strokePattern?: any
+    userInteractionEnabled?: boolean
+    map?: map4d.Map
     onCreated?: (polyline: map4d.Polyline) => void
+    onHover?: (polyline: any) => void
 }
 
 const MFPolyline = (props: PolylineProps) => {
@@ -25,7 +37,7 @@ const MFPolyline = (props: PolylineProps) => {
 
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
-    const polylineRef = useRef<map4d.Polyline>()
+    const polylineRef = useRef<any>()
 
     useEffect(() => {
         if (theMap && !polylineRef.current) {
@@ -49,6 +61,7 @@ const MFPolyline = (props: PolylineProps) => {
             })
             polylineRef.current = new map4d.Polyline(option)
             polylineRef.current?.setMap(theMap)
+            polylineRef.current.onHover = props.onHover
             onCreated && onCreated(polylineRef.current)
         }
     }, [theMap])
