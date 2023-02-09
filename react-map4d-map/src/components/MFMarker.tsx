@@ -52,7 +52,10 @@ const MFMarker = (props: MarkerProps) => {
         userInteractionEnabled,
         map,
         onCreated,
-        onClick
+        onClick,
+        onRightClick,
+        onDragEnd,
+        onHover
     } = props
 
     const map4dContext = useContext(Map4dContext);
@@ -130,6 +133,30 @@ const MFMarker = (props: MarkerProps) => {
             markerRef.current && markerClusterContext?.removeMarker && markerClusterContext?.removeMarker(markerRef.current)
         }
     }, [])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onHover = onHover
+        }
+    }, [onHover])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onClick = onClick
+        }
+    }, [onClick])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onRightClick = onRightClick
+        }
+    }, [onRightClick])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onHover = onDragEnd
+        }
+    }, [onDragEnd])
 
     useEffect(() => {
         markerRef.current?.setPosition(position)

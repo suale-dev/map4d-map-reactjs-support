@@ -28,7 +28,9 @@ const DemoPolyline = (props) => {
                     }}
                     accessKey={demoConfig.key}
                     version={"2.4"} >
-                    <MFPolyline onHover={() => { console.log("hoverPolyline") }} strokeColor={"#ff0000"} strokeWidth={10} path={post} />
+                    <MFPolyline 
+                    onClick={() => { console.log("clickPolyline") }}
+                    onHover={() => { console.log("hoverPolyline") }} strokeColor={"#ff0000"} strokeWidth={10} path={post} />
                 </MFMap>
             </div>
         </>

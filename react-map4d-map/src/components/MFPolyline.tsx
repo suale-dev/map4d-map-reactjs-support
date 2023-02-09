@@ -16,6 +16,7 @@ interface PolylineProps {
     map?: map4d.Map
     onCreated?: (polyline: map4d.Polyline) => void
     onHover?: (polyline: any) => void
+    onClick?: (polyline: any) => void
 }
 
 const MFPolyline = (props: PolylineProps) => {
@@ -32,6 +33,8 @@ const MFPolyline = (props: PolylineProps) => {
         strokePattern,
         userInteractionEnabled,
         map,
+        onClick,
+        onHover,
         onCreated
     } = props
 
@@ -62,6 +65,7 @@ const MFPolyline = (props: PolylineProps) => {
             polylineRef.current = new map4d.Polyline(option)
             polylineRef.current?.setMap(theMap)
             polylineRef.current.onHover = props.onHover
+            polylineRef.current.onClick = props.onClick
             onCreated && onCreated(polylineRef.current)
         }
     }, [theMap])
@@ -79,6 +83,19 @@ const MFPolyline = (props: PolylineProps) => {
             polylineRef.current?.setMap(null)
         }
     }, [])
+
+
+    useEffect(() => {
+        if (polylineRef.current) {
+            polylineRef.current.onHover = onHover
+        }
+    }, [onHover])
+
+    useEffect(() => {
+        if (polylineRef.current) {
+            polylineRef.current.onClick = onClick
+        }
+    }, [onClick])
 
     useEffect(() => {
         polylineRef.current?.setPath(path)

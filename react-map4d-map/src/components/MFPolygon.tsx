@@ -30,6 +30,7 @@ const MFPolygon = (props: PolygonProps) => {
         zIndex,
         userInteractionEnabled,
         map,
+        onHover,
         onCreated
     } = props
 
@@ -76,6 +77,12 @@ const MFPolygon = (props: PolygonProps) => {
             polygonRef.current?.setMap(null)
         }
     }, [])
+
+    useEffect(() => {
+        if (polygonRef.current) {
+            polygonRef.current.onHover = onHover
+        }
+    }, [onHover])
 
     useEffect(() => {
         polygonRef.current?.setPaths(paths)

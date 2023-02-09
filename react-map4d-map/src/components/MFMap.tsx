@@ -157,6 +157,12 @@ const MFMap = (props: MapProps) => {
       directions: true
     })
 
+    let eventClickPolyline= mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
+      args.polyline?.onClick && args.polyline?.onClick()
+    }, {
+      polyline: true
+    })
+
     events.current = events.current.concat([
       eventClickMarker,
       eventRightClickMarker,
@@ -164,7 +170,8 @@ const MFMap = (props: MapProps) => {
       eventHoverMarker,
       eventHoverPolygon,
       eventHoverPolyline,
-      eventHoverDirection
+      eventHoverDirection,
+      eventClickPolyline
     ])
     if (props.onClickLocation) {
       let onClickLocation = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {

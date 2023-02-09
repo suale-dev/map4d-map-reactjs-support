@@ -53,6 +53,7 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
         waypointMarkerOptions,
         onMarkerDragEnd,
         map,
+        onHover,
         onCreated
     } = props
 
@@ -91,6 +92,12 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
             onCreated && onCreated(directionRef.current)
         }
     }, [theMap])
+
+    useEffect(() => {
+        if (directionRef.current) {
+            directionRef.current.onHover = onHover
+        }
+    }, [onHover])
 
     useEffect(() => {
         if (theMap) {
