@@ -4,5 +4,8 @@ export const enum MapEventEnum {
     dragEnd = "dragEnd",
     cameraChanging = "cameraChanging",
     tilesLoaded = "tilesLoaded",
-    hover = "hover"
+    hover = "hover",
+    mouseOut = "mouseOut",
+    mouseMove = "mouseMove",
+    mouseOver = "mouseOver"
 }

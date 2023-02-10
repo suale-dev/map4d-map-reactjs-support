@@ -17,6 +17,9 @@ interface PolylineProps {
     onCreated?: (polyline: map4d.Polyline) => void
     onHover?: (polyline: any) => void
     onClick?: (polyline: any) => void
+    onMouseOut?:(marker: any)=> void
+    onMouseOver?:(marker: any)=> void
+    onMouseMove?: (marker: any)=> void
 }
 
 const MFPolyline = (props: PolylineProps) => {
@@ -35,7 +38,10 @@ const MFPolyline = (props: PolylineProps) => {
         map,
         onClick,
         onHover,
-        onCreated
+        onCreated,
+        onMouseOut,
+        onMouseOver,
+        onMouseMove
     } = props
 
     const map4dContext = useContext(Map4dContext);
@@ -66,6 +72,9 @@ const MFPolyline = (props: PolylineProps) => {
             polylineRef.current?.setMap(theMap)
             polylineRef.current.onHover = props.onHover
             polylineRef.current.onClick = props.onClick
+            polylineRef.current.onMouseOut = onMouseOut
+            polylineRef.current.onMouseOver = onMouseOver
+            polylineRef.current.onMouseMove = onMouseMove
             onCreated && onCreated(polylineRef.current)
         }
     }, [theMap])
@@ -90,6 +99,24 @@ const MFPolyline = (props: PolylineProps) => {
             polylineRef.current.onHover = onHover
         }
     }, [onHover])
+
+    useEffect(() => {
+        if (polylineRef.current) {
+            polylineRef.current.onMouseOut = onMouseOut
+        }
+    }, [onMouseOut])
+
+    useEffect(() => {
+        if (polylineRef.current) {
+            polylineRef.current.onMouseOver = onMouseOver
+        }
+    }, [onMouseOver])
+
+    useEffect(() => {
+        if (polylineRef.current) {
+            polylineRef.current.onMouseMove = onMouseMove
+        }
+    }, [onMouseMove])
 
     useEffect(() => {
         if (polylineRef.current) {

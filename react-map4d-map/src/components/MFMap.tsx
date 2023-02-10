@@ -163,6 +163,60 @@ const MFMap = (props: MapProps) => {
       polyline: true
     })
 
+    let eventMouseOutDirection= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
+      args.renderer?.onMouseOut && args.renderer?.onMouseOut()
+    }, {
+      directions: true
+    })
+
+    let eventMouseOverDirection= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
+      args.renderer?.onMouseOver && args.renderer?.onMouseOver()
+    }, {
+      directions: true
+    })
+
+    let eventMouseMoveDirection= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
+      args.renderer?.onMouseMove && args.renderer?.onMouseMove()
+    }, {
+      directions: true
+    })
+
+    let eventMouseOutPolyline= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
+      args.polyline?.onMouseOut && args.polyline?.onMouseOut()
+    }, {
+      polyline: true
+    })
+
+    let eventMouseOverPolyline= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
+      args.polyline?.onMouseOver && args.polyline?.onMouseOver()
+    }, {
+      polyline: true
+    })
+
+    let eventMouseMovePolyline= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
+      args.polyline?.onMouseMove && args.polyline?.onMouseMove()
+    }, {
+      polyline: true
+    })
+
+    let eventMouseOutMarker= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
+      args.marker?.onMouseOut && args.marker?.onMouseOut()
+    }, {
+      marker: true
+    })
+
+    let eventMouseOverMarker= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
+      args.marker?.onMouseOver && args.marker?.onMouseOver()
+    }, {
+      marker: true
+    })
+
+    let eventMouseMoveMarker= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
+      args.marker?.onMouseMove && args.marker?.onMouseMove()
+    }, {
+      marker: true
+    })
+
     events.current = events.current.concat([
       eventClickMarker,
       eventRightClickMarker,
@@ -171,7 +225,16 @@ const MFMap = (props: MapProps) => {
       eventHoverPolygon,
       eventHoverPolyline,
       eventHoverDirection,
-      eventClickPolyline
+      eventClickPolyline,
+      eventMouseOutDirection,
+      eventMouseOverDirection,
+      eventMouseMoveDirection,
+      eventMouseOutPolyline,
+      eventMouseOverPolyline,
+      eventMouseMovePolyline,
+      eventMouseOutMarker,
+      eventMouseOverMarker,
+      eventMouseMoveMarker
     ])
     if (props.onClickLocation) {
       let onClickLocation = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {

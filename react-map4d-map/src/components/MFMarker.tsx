@@ -31,6 +31,9 @@ interface MarkerProps {
     onRightClick?: (marker: any) => void
     onDragEnd?: (marker: any) => void
     onHover?: (marker: any) => void
+    onMouseOut?:(marker: any)=> void
+    onMouseOver?:(marker: any)=> void
+    onMouseMove?: (marker: any)=> void
 }
 
 const MFMarker = (props: MarkerProps) => {
@@ -55,7 +58,10 @@ const MFMarker = (props: MarkerProps) => {
         onClick,
         onRightClick,
         onDragEnd,
-        onHover
+        onHover,
+        onMouseOut,
+        onMouseOver,
+        onMouseMove
     } = props
 
     const map4dContext = useContext(Map4dContext);
@@ -102,12 +108,15 @@ const MFMarker = (props: MarkerProps) => {
                 markerRef.current.setMap(theMap)
             }
             if (props.showInfoWindow != undefined) {
-                props.showInfoWindow ? markerRef.current.showInfoWindow() : markerRef.current.hideInfoWindow()
+                props.showInfoWindow ? markerRef.current?.showInfoWindow() : markerRef.current?.hideInfoWindow()
             }
             markerRef.current.onClick = onClick
             markerRef.current.onRightClick = props.onRightClick
             markerRef.current.onDragEnd = props.onDragEnd
             markerRef.current.onHover = props.onHover
+            markerRef.current.onMouseOut = onMouseOut
+            markerRef.current.onMouseOver = onMouseOver
+            markerRef.current.onMouseMove = onMouseMove
             onCreated && onCreated(markerRef.current)
             markerClusterContext?.addMarker && markerClusterContext?.addMarker(markerRef.current)
         }
@@ -139,6 +148,24 @@ const MFMarker = (props: MarkerProps) => {
             markerRef.current.onHover = onHover
         }
     }, [onHover])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onMouseOut = onMouseOut
+        }
+    }, [onMouseOut])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onMouseOver = onMouseOver
+        }
+    }, [onMouseOver])
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.onMouseMove = onMouseMove
+        }
+    }, [onMouseMove])
 
     useEffect(() => {
         if (markerRef.current) {
@@ -220,7 +247,7 @@ const MFMarker = (props: MarkerProps) => {
 
     useEffect(() => {
         if (props.showInfoWindow != undefined) {
-            props.showInfoWindow ? markerRef.current.showInfoWindow() : markerRef.current.hideInfoWindow()
+            props.showInfoWindow ? markerRef.current?.showInfoWindow() : markerRef.current?.hideInfoWindow()
         }
     }, [props.showInfoWindow])
     return null

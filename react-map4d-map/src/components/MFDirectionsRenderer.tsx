@@ -32,6 +32,9 @@ interface DirectionsRendererProps {
     map?: map4d.Map,
     onCreated?: (directionsRenderer?: map4d.DirectionsRenderer) => void
     onHover?: (directions: any) => void
+    onMouseOut?:(marker: any)=> void
+    onMouseOver?:(marker: any)=> void
+    onMouseMove?: (marker: any)=> void
 }
 
 const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
@@ -54,7 +57,10 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
         onMarkerDragEnd,
         map,
         onHover,
-        onCreated
+        onCreated,   
+        onMouseOut,
+        onMouseOver,
+        onMouseMove
     } = props
 
     const map4dContext = useContext(Map4dContext);
@@ -89,6 +95,9 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
             directionRef.current = new map4d.DirectionsRenderer(option)
             directionRef.current?.setMap(theMap)
             directionRef.current.onHover = props.onHover
+            directionRef.current.onMouseOut = onMouseOut
+            directionRef.current.onMouseOver = onMouseOver
+            directionRef.current.onMouseMove = onMouseMove
             onCreated && onCreated(directionRef.current)
         }
     }, [theMap])
@@ -98,6 +107,24 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
             directionRef.current.onHover = onHover
         }
     }, [onHover])
+
+    useEffect(() => {
+        if (directionRef.current) {
+            directionRef.current.onMouseOut = onMouseOut
+        }
+    }, [onMouseOut])
+
+    useEffect(() => {
+        if (directionRef.current) {
+            directionRef.current.onMouseOver = onMouseOver
+        }
+    }, [onMouseOver])
+
+    useEffect(() => {
+        if (directionRef.current) {
+            directionRef.current.onMouseMove = onMouseMove
+        }
+    }, [onMouseMove])
 
     useEffect(() => {
         if (theMap) {
