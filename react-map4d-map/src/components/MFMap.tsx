@@ -118,103 +118,115 @@ const MFMap = (props: MapProps) => {
 
   const registerEvent = () => {
     let eventClickMarker = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
-      args.marker?.onClick && args.marker?.onClick()
+      args.marker?.onClick && args.marker?.onClick(args)
     }, {
       marker: true
     })
     let eventRightClickMarker = mapRef.current?.addListener(MapEventEnum.rightClick, (args: any) => {
-      args.marker?.onRightClick && args.marker?.onRightClick()
+      args.marker?.onRightClick && args.marker?.onRightClick(args)
     }, {
       marker: true
     })
     let eventDragEndMarker = mapRef.current?.addListener(MapEventEnum.dragEnd, (args: any) => {
-      args.marker?.onDragEnd && args.marker?.onDragEnd()
+      args.marker?.onDragEnd && args.marker?.onDragEnd(args)
     }, {
       marker: true
     })
 
     let eventHoverMarker = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
-      args.marker?.onHover && args.marker?.onHover()
+      args.marker?.onHover && args.marker?.onHover(args)
     }, {
       marker: true
     })
 
     let eventHoverPolygon = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
-      args.polygon?.onHover && args.polygon?.onHover()
+      args.polygon?.onHover && args.polygon?.onHover(args)
     }, {
       polygon: true
     })
 
     let eventHoverPolyline = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
-      args.polyline?.onHover && args.polyline?.onHover()
+      args.polyline?.onHover && args.polyline?.onHover(args)
     }, {
       polyline: true
     })
 
     let eventHoverDirection= mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
-      args.renderer?.onHover && args.renderer?.onHover()
+      args.renderer?.onHover && args.renderer?.onHover(args)
     }, {
       directions: true
     })
 
     let eventClickPolyline= mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
-      args.polyline?.onClick && args.polyline?.onClick()
+      args.polyline?.onClick && args.polyline?.onClick(args)
     }, {
       polyline: true
     })
 
     let eventMouseOutDirection= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
-      args.renderer?.onMouseOut && args.renderer?.onMouseOut()
+      args.renderer?.onMouseOut && args.renderer?.onMouseOut(args)
     }, {
       directions: true
     })
 
     let eventMouseOverDirection= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
-      args.renderer?.onMouseOver && args.renderer?.onMouseOver()
+      args.renderer?.onMouseOver && args.renderer?.onMouseOver(args)
     }, {
       directions: true
     })
 
     let eventMouseMoveDirection= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
-      args.renderer?.onMouseMove && args.renderer?.onMouseMove()
+      args.renderer?.onMouseMove && args.renderer?.onMouseMove(args)
     }, {
       directions: true
     })
 
     let eventMouseOutPolyline= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
-      args.polyline?.onMouseOut && args.polyline?.onMouseOut()
+      args.polyline?.onMouseOut && args.polyline?.onMouseOut(args)
     }, {
       polyline: true
     })
 
     let eventMouseOverPolyline= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
-      args.polyline?.onMouseOver && args.polyline?.onMouseOver()
+      args.polyline?.onMouseOver && args.polyline?.onMouseOver(args)
     }, {
       polyline: true
     })
 
     let eventMouseMovePolyline= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
-      args.polyline?.onMouseMove && args.polyline?.onMouseMove()
+      args.polyline?.onMouseMove && args.polyline?.onMouseMove(args)
     }, {
       polyline: true
     })
 
     let eventMouseOutMarker= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
-      args.marker?.onMouseOut && args.marker?.onMouseOut()
+      args.marker?.onMouseOut && args.marker?.onMouseOut(args)
     }, {
       marker: true
     })
 
     let eventMouseOverMarker= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
-      args.marker?.onMouseOver && args.marker?.onMouseOver()
+      args.marker?.onMouseOver && args.marker?.onMouseOver(args)
     }, {
       marker: true
     })
 
     let eventMouseMoveMarker= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
-      args.marker?.onMouseMove && args.marker?.onMouseMove()
+      args.marker?.onMouseMove && args.marker?.onMouseMove(args)
     }, {
       marker: true
+    })
+
+    let eventClickPoi= mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
+      args.poi?.onClick && args.poi?.onClick(args)
+    }, {
+      poi: true
+    })
+
+    let eventHoverPoi= mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+      args.poi?.onHover && args.poi?.onHover(args)
+    }, {
+      poi: true
     })
 
     events.current = events.current.concat([
@@ -234,7 +246,9 @@ const MFMap = (props: MapProps) => {
       eventMouseMovePolyline,
       eventMouseOutMarker,
       eventMouseOverMarker,
-      eventMouseMoveMarker
+      eventMouseMoveMarker,
+      eventClickPoi,
+      eventHoverPoi
     ])
     if (props.onClickLocation) {
       let onClickLocation = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {

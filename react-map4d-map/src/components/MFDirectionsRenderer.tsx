@@ -31,10 +31,10 @@ interface DirectionsRendererProps {
 
     map?: map4d.Map,
     onCreated?: (directionsRenderer?: map4d.DirectionsRenderer) => void
-    onHover?: (directions: any) => void
-    onMouseOut?:(marker: any)=> void
-    onMouseOver?:(marker: any)=> void
-    onMouseMove?: (marker: any)=> void
+    onHover?: (args: any) => void
+    onMouseOut?:(args: any)=> void
+    onMouseOver?:(args: any)=> void
+    onMouseMove?: (args: any)=> void
 }
 
 const MFDirectionsRenderer = (props: DirectionsRendererProps) => {

@@ -15,11 +15,11 @@ interface PolylineProps {
     userInteractionEnabled?: boolean
     map?: map4d.Map
     onCreated?: (polyline: map4d.Polyline) => void
-    onHover?: (polyline: any) => void
-    onClick?: (polyline: any) => void
-    onMouseOut?:(marker: any)=> void
-    onMouseOver?:(marker: any)=> void
-    onMouseMove?: (marker: any)=> void
+    onHover?: (args: any) => void
+    onClick?: (args: any) => void
+    onMouseOut?:(args: any)=> void
+    onMouseOver?:(args: any)=> void
+    onMouseMove?: (args: any)=> void
 }
 
 const MFPolyline = (props: PolylineProps) => {

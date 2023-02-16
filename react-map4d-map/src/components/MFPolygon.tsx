@@ -14,7 +14,7 @@ interface PolygonProps {
     userInteractionEnabled?: boolean
     map?: map4d.Map,
     onCreated?: (polygon: map4d.Polygon) => void
-    onHover?: (polygon: any) => void
+    onHover?: (args: any) => void
 }
 
 const MFPolygon = (props: PolygonProps) => {

@@ -26,14 +26,14 @@ interface MarkerProps {
     infoWindow?: string | Node
     infoContents?: string | Node
     showInfoWindow?: boolean
-    onClick?: (marker: any) => void
+    onClick?: (args: any) => void
     onCreated?: (marker: any) => void
-    onRightClick?: (marker: any) => void
-    onDragEnd?: (marker: any) => void
-    onHover?: (marker: any) => void
-    onMouseOut?:(marker: any)=> void
-    onMouseOver?:(marker: any)=> void
-    onMouseMove?: (marker: any)=> void
+    onRightClick?: (args: any) => void
+    onDragEnd?: (args: any) => void
+    onHover?: (args: any) => void
+    onMouseOut?:(args: any)=> void
+    onMouseOver?:(args: any)=> void
+    onMouseMove?: (args: any)=> void
 }
 
 const MFMarker = (props: MarkerProps) => {
