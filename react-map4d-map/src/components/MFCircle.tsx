@@ -13,7 +13,7 @@ interface CircleProps {
     draggable?: boolean
     zIndex?: number
     elevation?: number
-    userInteractionEnabled?: boolean
+    clickable?: boolean
     map?: map4d.Map
     onCreated?: (circle: map4d.Circle) => void
 }
@@ -22,15 +22,15 @@ const MFCircle = (props: CircleProps) => {
     const {
         center,
         radius,
-        fillColor,
-        fillOpacity,
-        visible,
-        strokeColor,
+        fillColor="#0000FF",
+        fillOpacity = 1,
+        visible = true,
+        strokeColor = "#00FF00",
         strokeWidth,
         draggable,
         zIndex,
         elevation,
-        userInteractionEnabled,
+        clickable,
         map,
         onCreated
     } = props
@@ -52,7 +52,7 @@ const MFCircle = (props: CircleProps) => {
                 draggable: draggable,
                 zIndex: zIndex,
                 elevation: elevation,
-                userInteractionEnabled: userInteractionEnabled,
+                clickable: clickable,
             }
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
@@ -131,10 +131,10 @@ const MFCircle = (props: CircleProps) => {
         }
     }, [elevation])
     useEffect(() => {
-        if (VariableTool.hasValue(userInteractionEnabled)) {
-            circleRef.current?.setUserInteraction(userInteractionEnabled as boolean)
+        if (VariableTool.hasValue(clickable)) {
+            circleRef.current?.setClickable(clickable as boolean)
         }
-    }, [userInteractionEnabled])
+    }, [clickable])
 
     return null
 }

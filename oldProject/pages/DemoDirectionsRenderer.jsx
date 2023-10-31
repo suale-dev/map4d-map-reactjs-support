@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { MFDirectionsRenderer, MFMap } from "react-map4d-map"
 
 const option = {
@@ -35,6 +35,8 @@ const option = {
 }
 
 const DemoDirectionsRenderer = (props) => {
+    const [show, setShow] = useState(true)
+    const [routes, setRoutes] = useState(option.routes)
     return (
         <>
             <div style={{ width: '80%', height: '300px' }}>
@@ -46,17 +48,30 @@ const DemoDirectionsRenderer = (props) => {
                     }}
                     accessKey={demoConfig.key}
                     version={"2.4"} >
-                    <MFDirectionsRenderer
-                        onHover={() => { console.log("hoverRenderer") }}
-                        routes={option.routes}
-                        originMarkerOptions={option.originMarkerOptions}
-                        destinationMarkerOptions={option.destinationMarkerOptions}
-                        activeOutlineWidth={option.activeOutlineWidth}
-                        inactiveOutlineWidth={option.inactiveOutlineWidth}
-                        inactiveOutlineColor={option.inactiveOutlineColor}
-                    />
+                    {
+                        show &&
+                        <MFDirectionsRenderer
+                            onHover={() => { console.log("hoverRenderer") }}
+                            routes={routes}
+                            originMarkerOptions={option.originMarkerOptions}
+                            destinationMarkerOptions={option.destinationMarkerOptions}
+                            activeOutlineWidth={option.activeOutlineWidth}
+                            inactiveOutlineWidth={option.inactiveOutlineWidth}
+                            inactiveOutlineColor={option.inactiveOutlineColor}
+                        />
+                    }
+
                 </MFMap>
             </div>
+            <button onClick={() => {
+                setRoutes([
+                    [
+                        { lat: 16.078814, lng: 108.221592 },
+                        { lat: 16.078972, lng: 108.223034 },
+                        { lat: 16.075353, lng: 108.223513 },
+                    ]
+                ])
+            }}>hide</button>
         </>
     )
 }

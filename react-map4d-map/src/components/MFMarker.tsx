@@ -21,7 +21,7 @@ interface MarkerProps {
     label?: any
     draggable?: boolean
     iconView?: string | Node
-    userInteractionEnabled?: boolean
+    clickable?: boolean
     map?: any,
     infoWindow?: string | Node
     infoContents?: string | Node
@@ -52,7 +52,7 @@ const MFMarker = (props: MarkerProps) => {
         label,
         draggable,
         iconView,
-        userInteractionEnabled,
+        clickable,
         map,
         onCreated,
         onClick,
@@ -86,7 +86,7 @@ const MFMarker = (props: MarkerProps) => {
                 label: label,
                 draggable: draggable,
                 iconView: iconView,
-                userInteractionEnabled: userInteractionEnabled
+                clickable: clickable
             } as map4d.MarkerOptions
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
@@ -230,8 +230,8 @@ const MFMarker = (props: MarkerProps) => {
     }, [iconView])
 
     useEffect(() => {
-        userInteractionEnabled != undefined && markerRef.current?.setUserInteraction(userInteractionEnabled)
-    }, [userInteractionEnabled])
+        clickable != undefined && markerRef.current?.setClickable(clickable)
+    }, [clickable])
 
     useEffect(() => {
         icon != undefined && markerRef.current?.setIcon(new map4d.Icon(icon.width, icon.height, icon.url))

@@ -12,7 +12,7 @@ interface POIProps extends map4d.POIOptions {
     zIndex?: number
     visible?: boolean
     draggable?: boolean
-    userInteractionEnabled?: boolean
+    clickable?: boolean
     map?: map4d.Map,
     onCreated?: (poi: map4d.POI) => void
     onClick?: (args: any) => void
@@ -31,7 +31,7 @@ const MFPOI = (props: POIProps) => {
         zIndex,
         visible,
         draggable,
-        userInteractionEnabled,
+        clickable,
         map,
         onCreated,
         onClick,
@@ -55,7 +55,7 @@ const MFPOI = (props: POIProps) => {
                 zIndex: zIndex,
                 visible: visible,
                 draggable: draggable,
-                userInteractionEnabled: userInteractionEnabled
+                clickable: clickable
             }
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
@@ -115,8 +115,8 @@ const MFPOI = (props: POIProps) => {
         draggable != undefined && poiRef.current?.setDraggable(draggable)
     }, [draggable])
     useEffect(() => {
-        userInteractionEnabled != undefined && poiRef.current?.setUserInteraction(userInteractionEnabled)
-    }, [userInteractionEnabled])
+        clickable != undefined && poiRef.current?.setClickable(clickable)
+    }, [clickable])
 
     useEffect(() => {
         if (poiRef.current) {

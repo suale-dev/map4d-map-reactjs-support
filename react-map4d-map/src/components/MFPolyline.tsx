@@ -12,7 +12,7 @@ interface PolylineProps {
     zIndex?: number
     elevation?: number
     strokePattern?: any
-    userInteractionEnabled?: boolean
+    clickable?: boolean
     map?: map4d.Map
     onCreated?: (polyline: map4d.Polyline) => void
     onHover?: (args: any) => void
@@ -34,7 +34,7 @@ const MFPolyline = (props: PolylineProps) => {
         zIndex,
         elevation,
         strokePattern,
-        userInteractionEnabled,
+        clickable,
         map,
         onClick,
         onHover,
@@ -61,8 +61,8 @@ const MFPolyline = (props: PolylineProps) => {
                 zIndex: zIndex,
                 elevation: elevation,
                 strokePattern: strokePattern,
-                userInteractionEnabled: userInteractionEnabled,
-            }
+                clickable: clickable,
+            } as any
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
                     delete option[key]
@@ -155,8 +155,8 @@ const MFPolyline = (props: PolylineProps) => {
         strokePattern != undefined && polylineRef.current?.setStrokePattern(strokePattern)
     }, [strokePattern])
     useEffect(() => {
-        userInteractionEnabled != undefined && polylineRef.current?.setUserInteraction(userInteractionEnabled)
-    }, [userInteractionEnabled])
+        clickable != undefined && polylineRef.current?.setClickable(clickable)
+    }, [clickable])
 
     return null
 }

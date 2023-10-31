@@ -32,9 +32,9 @@ interface DirectionsRendererProps {
     map?: map4d.Map,
     onCreated?: (directionsRenderer?: map4d.DirectionsRenderer) => void
     onHover?: (args: any) => void
-    onMouseOut?:(args: any)=> void
-    onMouseOver?:(args: any)=> void
-    onMouseMove?: (args: any)=> void
+    onMouseOut?: (args: any) => void
+    onMouseOver?: (args: any) => void
+    onMouseMove?: (args: any) => void
 }
 
 const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
@@ -57,7 +57,7 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
         onMarkerDragEnd,
         map,
         onHover,
-        onCreated,   
+        onCreated,
         onMouseOut,
         onMouseOver,
         onMouseMove
@@ -99,6 +99,9 @@ const MFDirectionsRenderer = (props: DirectionsRendererProps) => {
             directionRef.current.onMouseOver = onMouseOver
             directionRef.current.onMouseMove = onMouseMove
             onCreated && onCreated(directionRef.current)
+        }
+        return () => {
+            directionRef.current?.setMap(null as unknown as map4d.Map)
         }
     }, [theMap])
 
