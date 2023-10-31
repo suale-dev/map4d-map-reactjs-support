@@ -32,7 +32,7 @@ const MFTileOverlay = (props: TileOverlayProps) => {
             visible: visible,
             zIndex: zIndex,
             opacity: opacity
-        }
+        } as any
         Object.keys(option).forEach(key => {
             if (option[key] == undefined || option[key] == null) {
                 delete option[key]

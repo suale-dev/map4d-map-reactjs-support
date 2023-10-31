@@ -24,7 +24,8 @@ const DemoPolyline = (props) => {
                     options={{
                         center: { lat: 10.773201, lng: 106.700147 },
                         zoom: 17,
-                        controls: true
+                        controls: true,
+                        mapType:"map3D"
                     }}
                     accessKey={demoConfig.key}
                     version={"2.4"} >

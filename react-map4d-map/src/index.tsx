@@ -13,6 +13,8 @@ import MFPOIOverlay from './components/MFPOIOverlay';
 import MFPolygon from './components/MFPolygon';
 import MFPolyline from './components/MFPolyline';
 import MFTileOverlay from './components/MFTileOverlay';
+import { CoordinateTransformer } from './ultils/CoordinateTransformer';
+import { LatLng } from './models/LatLng';
 
 export {
   MFBuilding,
@@ -29,6 +31,8 @@ export {
   MFPOIOverlay,
   MFPolygon,
   MFPolyline,
-  MFTileOverlay
+  MFTileOverlay,
+  CoordinateTransformer,
+  LatLng
 };
 

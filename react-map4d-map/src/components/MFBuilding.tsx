@@ -14,7 +14,7 @@ interface BuildingProps {
     zIndex?: number
     visible?: boolean
     draggable?: boolean
-    userInteractionEnabled?: boolean
+    clickable?: boolean
     selected?: boolean
     growUp?: boolean
     map?: map4d.Map
@@ -24,18 +24,18 @@ const MFBuilding = (props: BuildingProps) => {
     const {
         position,
         name,
-        scale,
-        bearing,
-        elevation,
-        height,
+        scale = 1,
+        bearing = 0,
+        elevation = 0,
+        height = 1,
         model,
         texture,
         coordinates,
-        visible,
-        draggable,
-        userInteractionEnabled,
-        selected,
-        growUp,
+        visible = true,
+        draggable = false,
+        clickable = true,
+        selected = false,
+        growUp = true,
         map,
         onCreated
     } = props
@@ -45,7 +45,7 @@ const MFBuilding = (props: BuildingProps) => {
     const buildingRef = useRef(null as unknown as map4d.Building)
 
     useEffect(() => {
-        if (theMap && !buildingRef.current && (coordinates && coordinates?.length > 0 || model)) {
+        if (theMap && !buildingRef.current && ((coordinates && coordinates?.length > 0) || model)) {
             let option = {
                 position: position || { lat: 10.793113, lng: 106.720739 },
                 name: name,
@@ -58,7 +58,7 @@ const MFBuilding = (props: BuildingProps) => {
                 coordinates: coordinates,
                 visible: visible,
                 draggable: draggable,
-                userInteractionEnabled: userInteractionEnabled,
+                clickable: clickable,
                 selected: selected,
                 growUp: growUp
             }
@@ -91,45 +91,43 @@ const MFBuilding = (props: BuildingProps) => {
         buildingRef.current?.setPosition(position as map4d.ILatLng)
     }, [position])
     useEffect(() => {
-        name != undefined && buildingRef.current?.setName(name)
+        buildingRef.current?.setName(name)
     }, [name])
     useEffect(() => {
-        scale != undefined && buildingRef.current?.setScale(scale)
+        buildingRef.current?.setScale(scale)
     }, [scale])
     useEffect(() => {
-        if (bearing != undefined) {
-            buildingRef.current?.setBearing(bearing)
-        }
+        buildingRef.current?.setBearing(bearing)
     }, [bearing])
     useEffect(() => {
-        elevation != undefined && buildingRef.current?.setElevation(elevation)
+        buildingRef.current?.setElevation(elevation)
     }, [elevation])
     useEffect(() => {
-        height != undefined && buildingRef.current?.setHeight(height)
+        buildingRef.current?.setHeight(height)
     }, [height])
     useEffect(() => {
-        model != undefined && buildingRef.current?.setModel(model)
+        buildingRef.current?.setModel(model)
     }, [model])
     useEffect(() => {
-        texture != undefined && buildingRef.current?.setTexture(texture)
+        buildingRef.current?.setTexture(texture)
     }, [texture])
     useEffect(() => {
-        coordinates != undefined && buildingRef.current?.setCoordinates(coordinates)
+        buildingRef.current?.setCoordinates(coordinates)
     }, [coordinates])
     useEffect(() => {
-        visible != undefined && buildingRef.current?.setVisible(visible)
+        buildingRef.current?.setVisible(visible)
     }, [visible])
     useEffect(() => {
-        draggable != undefined && buildingRef.current?.setDraggable(draggable)
+       buildingRef.current?.setDraggable(draggable)
     }, [draggable])
     useEffect(() => {
-        userInteractionEnabled != undefined && buildingRef.current?.setUserInteraction(userInteractionEnabled)
-    }, [userInteractionEnabled])
+        buildingRef.current?.setClickable(clickable)
+    }, [clickable])
     useEffect(() => {
-        selected != undefined && buildingRef.current?.setSelected(selected)
+        buildingRef.current?.setSelected(selected)
     }, [selected])
     useEffect(() => {
-        growUp != undefined && buildingRef.current?.setGrowUp(growUp)
+        buildingRef.current?.setGrowUp(growUp)
     }, [growUp])
     return null
 }

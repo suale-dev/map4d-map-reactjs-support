@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Map4dContext } from '../context';
 import { MapEventEnum } from '../enum';
 
@@ -73,17 +73,13 @@ const MFMap = (props: MapProps) => {
     callback.current = `callback_${id}`
     const createCallback = () => {
       window[callback.current] = () => {
-        if (mapDomRef.current) {
-          let options = props.options
-          mapRef.current = new window.map4d.Map(mapDomRef.current, options)
-          if (props.onMapReady) {
-            props.onMapReady(mapRef.current, id)
-          }
-          registerEvent()
-          setMap(mapRef.current)
-        } else {
-          console.error(`MFMap: map element is NOT found`)
+        let options = props.options
+        mapRef.current = new window.map4d.Map(mapDomRef.current, options)
+        if (props.onMapReady) {
+          props.onMapReady(mapRef.current, id)
         }
+        registerEvent()
+        setMap(mapRef.current)
       }
     }
     let domain = `https://api${props.environment ? "-" + props.environment : ""}.map4d.vn`
@@ -115,6 +111,19 @@ const MFMap = (props: MapProps) => {
       destroy()
     }
   }, [props.environment, props.version, props.accessKey])
+
+  useEffect(() => {
+    props.options?.mapType != undefined && mapRef.current?.setMapType(props.options?.mapType)
+  }, [props.options?.mapType])
+
+  useEffect(() => {
+    if (props.options?.center != undefined) {
+      let camera = mapRef.current?.getCamera()
+      camera?.setTarget(props.options?.center)
+      mapRef.current?.moveCamera(camera)
+    }
+    props.options?.mapType != undefined && mapRef.current?.setMapType(props.options?.mapType)
+  }, [props.options?.center])
 
   const registerEvent = () => {
     let eventClickMarker = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
@@ -151,79 +160,79 @@ const MFMap = (props: MapProps) => {
       polyline: true
     })
 
-    let eventHoverDirection= mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+    let eventHoverDirection = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
       args.renderer?.onHover && args.renderer?.onHover(args)
     }, {
       directions: true
     })
 
-    let eventClickPolyline= mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
+    let eventClickPolyline = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
       args.polyline?.onClick && args.polyline?.onClick(args)
     }, {
       polyline: true
     })
 
-    let eventMouseOutDirection= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
+    let eventMouseOutDirection = mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
       args.renderer?.onMouseOut && args.renderer?.onMouseOut(args)
     }, {
       directions: true
     })
 
-    let eventMouseOverDirection= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
+    let eventMouseOverDirection = mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
       args.renderer?.onMouseOver && args.renderer?.onMouseOver(args)
     }, {
       directions: true
     })
 
-    let eventMouseMoveDirection= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
+    let eventMouseMoveDirection = mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
       args.renderer?.onMouseMove && args.renderer?.onMouseMove(args)
     }, {
       directions: true
     })
 
-    let eventMouseOutPolyline= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
+    let eventMouseOutPolyline = mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
       args.polyline?.onMouseOut && args.polyline?.onMouseOut(args)
     }, {
       polyline: true
     })
 
-    let eventMouseOverPolyline= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
+    let eventMouseOverPolyline = mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
       args.polyline?.onMouseOver && args.polyline?.onMouseOver(args)
     }, {
       polyline: true
     })
 
-    let eventMouseMovePolyline= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
+    let eventMouseMovePolyline = mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
       args.polyline?.onMouseMove && args.polyline?.onMouseMove(args)
     }, {
       polyline: true
     })
 
-    let eventMouseOutMarker= mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
+    let eventMouseOutMarker = mapRef.current?.addListener(MapEventEnum.mouseOut, (args: any) => {
       args.marker?.onMouseOut && args.marker?.onMouseOut(args)
     }, {
       marker: true
     })
 
-    let eventMouseOverMarker= mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
+    let eventMouseOverMarker = mapRef.current?.addListener(MapEventEnum.mouseOver, (args: any) => {
       args.marker?.onMouseOver && args.marker?.onMouseOver(args)
     }, {
       marker: true
     })
 
-    let eventMouseMoveMarker= mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
+    let eventMouseMoveMarker = mapRef.current?.addListener(MapEventEnum.mouseMove, (args: any) => {
       args.marker?.onMouseMove && args.marker?.onMouseMove(args)
     }, {
       marker: true
     })
 
-    let eventClickPoi= mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
+    let eventClickPoi = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
       args.poi?.onClick && args.poi?.onClick(args)
     }, {
       poi: true
     })
 
-    let eventHoverPoi= mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
+    let eventHoverPoi = mapRef.current?.addListener(MapEventEnum.hover, (args: any) => {
       args.poi?.onHover && args.poi?.onHover(args)
     }, {
       poi: true
@@ -286,19 +295,21 @@ const MFMap = (props: MapProps) => {
   let newContext = {
     map: map
   }
-  const refDiv = (r: any) => {
-    mapDomRef.current = r
-  }
   return (
-    <Map4dContext.Provider value={newContext}>
+    <Fragment>
       <div
         style={{ width: '100%', height: '100%', display: 'block' }}
-        ref={refDiv}>
+        ref={mapDomRef}
+      >
       </div>
-      {
-        props.children
-      }
-    </Map4dContext.Provider>
+      <Map4dContext.Provider value={newContext}>
+
+        {
+          props.children
+        }
+      </Map4dContext.Provider>
+    </Fragment>
+
   );
 }
 

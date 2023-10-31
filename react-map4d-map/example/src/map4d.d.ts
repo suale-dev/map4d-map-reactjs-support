@@ -93,8 +93,8 @@ declare module map4d {
     center: LatLng
   }
 
-  type ICameraPosition = CameraPosition | { target?: ILatLng, tilt?: number, bearing?: number, zoom?: number }
-  class CameraPosition {
+  type ICameraPosition  = CameraPosition | {target?: ILatLng, tilt?: number, bearing?: number, zoom?: number}
+  class CameraPosition{
     setTarget(target: ILatLng): void
     setTilt(degrees: number): void
     setBearing(degrees: number): void
@@ -113,7 +113,7 @@ declare module map4d {
     getUrl(): string
   }
 
-  type ILatLng = LatLng | { lat: number, lng: number } | [number, number]
+  type ILatLng  = LatLng | {lat: number, lng: number} | [number, number]
   class LatLng {
     constructor(lat: number, lng: number)
     equals(other: LatLng): boolean
@@ -177,7 +177,7 @@ declare module map4d {
     None
   }
 
-  enum TimeEffect {
+  enum TimeEffect{
     Live,
     Morning,
     Noon,
@@ -319,7 +319,7 @@ declare module map4d {
 
     type FeatureOptions = {
 
-      id: number | string
+      id : number | string
 
       geometry: Data.Geometry
 
@@ -440,7 +440,7 @@ declare module map4d {
     BOUNCE = "bounce",
     DROP = "drop"
   }
-
+  
   type IAnimation = Animation | string
 
   interface MarkerOptions {
@@ -519,8 +519,8 @@ declare module map4d {
     getUserData(): any
     setUserData(data: any)
     setLabel(label: string | MarkerLabel): void
-    setIconView(iconView: string | Node): void
-    getIconView(): string | Node
+    setIconView(iconView: string | Node ): void
+    getIconView():  string | Node
     /**
      * @deprecated This method is no longer support, which is subject to removal in a future versions.
      */
@@ -549,7 +549,7 @@ declare module map4d {
     getMargin(): MarginOptions
   }
 
-  type IPoint = Point | { x: number, y: number } | [number, number]
+  type IPoint  = Point | {x: number, y: number} | [number, number]
   class Point {
     x: number
     y: number
@@ -758,7 +758,7 @@ declare module map4d {
     bearing?: number
     elevation?: number
     height?: number
-    model?: string
+    model?:  string
     texture?: string
     coordinates?: ILatLng[]
     zIndex?: number
@@ -881,7 +881,7 @@ declare module map4d {
   interface POIOverlayOptions {
     getUrl: Function
     parserData: Function
-    prefixId?: string
+    prefixId? :string
     visible?: boolean
   }
 
@@ -911,7 +911,7 @@ declare module map4d {
   interface BuildingOverlayOptions {
     getUrl: Function
     parserData: Function
-    prefixId?: string
+    prefixId? :string
     visible?: boolean
   }
 
@@ -926,7 +926,7 @@ declare module map4d {
   interface WeatherProvider {
     refreshDistance?: number,//metter
     refreshTime?: number,//seconds
-    getWeather: (location: LatLng, callback: (weather: number | string | Weather) => void) => void
+    getWeather: (location: LatLng, callback: (weather: number|string|Weather) => void) => void
   }
 
   interface RouteOptions {

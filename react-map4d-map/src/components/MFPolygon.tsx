@@ -11,7 +11,7 @@ interface PolygonProps {
     draggable?: boolean
     zIndex?: number
     elevation?: number
-    userInteractionEnabled?: boolean
+    clickable?: boolean
     map?: map4d.Map,
     onCreated?: (polygon: map4d.Polygon) => void
     onHover?: (args: any) => void
@@ -28,7 +28,7 @@ const MFPolygon = (props: PolygonProps) => {
         draggable,
         elevation,
         zIndex,
-        userInteractionEnabled,
+        clickable,
         map,
         onHover,
         onCreated
@@ -37,7 +37,7 @@ const MFPolygon = (props: PolygonProps) => {
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
     const polygonRef = useRef<any>()
-
+    const a = useRef()
     useEffect(() => {
         if (theMap && !polygonRef.current) {
             let option = {
@@ -50,7 +50,7 @@ const MFPolygon = (props: PolygonProps) => {
                 draggable: draggable,
                 elevation: elevation,
                 zIndex: zIndex,
-                userInteractionEnabled: userInteractionEnabled,
+                clickable: clickable,
             }
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
@@ -58,6 +58,8 @@ const MFPolygon = (props: PolygonProps) => {
                 }
             })
             polygonRef.current = new map4d.Polygon(option)
+            a.current = theMap
+            console.log(a.current)
             polygonRef.current?.setMap(theMap)
             polygonRef.current.onHover = props.onHover
             onCreated && onCreated(polygonRef.current)
@@ -85,6 +87,11 @@ const MFPolygon = (props: PolygonProps) => {
     }, [onHover])
 
     useEffect(() => {
+        if (polygonRef.current) {
+            let c = polygonRef.current?.getMap()
+            console.log(c == a.current)
+        }
+
         polygonRef.current?.setPaths(paths)
     }, [paths])
     useEffect(() => {
@@ -112,8 +119,8 @@ const MFPolygon = (props: PolygonProps) => {
         zIndex != undefined && polygonRef.current?.setZIndex(zIndex)
     }, [zIndex])
     useEffect(() => {
-        userInteractionEnabled != undefined && polygonRef.current?.setUserInteraction(userInteractionEnabled)
-    }, [userInteractionEnabled])
+        clickable != undefined && polygonRef.current?.setClickable(clickable)
+    }, [clickable])
 
     return null
 }
