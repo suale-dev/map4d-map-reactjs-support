@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef } from 'react';
 import { Map4dContext, MarkerClusterContext } from '../context';
+import { VariableTool } from '../tool';
 
 interface IconProps {
     width: number,
@@ -18,7 +19,7 @@ interface MarkerProps {
     snippet?: string
     windowAnchor?: any
     zIndex?: number
-    label?: any
+    label?: string | map4d.MarkerLabelOptions
     draggable?: boolean
     iconView?: string | Node
     clickable?: boolean
@@ -72,6 +73,7 @@ const MFMarker = (props: MarkerProps) => {
 
     useEffect(() => {
         if (theMap && !markerRef.current) {
+            let markerLabel = typeof label == "string" ? label : new map4d.MarkerLabel(label)
             let option = {
                 position: position || { lat: 10.793113, lng: 106.720739 },
                 visible: visible,
@@ -83,7 +85,7 @@ const MFMarker = (props: MarkerProps) => {
                 snippet: snippet,
                 windowAnchor: windowAnchor,
                 zIndex: zIndex,
-                label: label,
+                label: markerLabel,
                 draggable: draggable,
                 iconView: iconView,
                 clickable: clickable
@@ -219,7 +221,10 @@ const MFMarker = (props: MarkerProps) => {
         zIndex != undefined && markerRef.current?.setZIndex(zIndex)
     }, [zIndex])
     useEffect(() => {
-        label != undefined && markerRef.current?.setLabel(label)
+        if (theMap && VariableTool.hasValue(label)) {
+            let markerLabel = typeof label == "string" ? label : new map4d.MarkerLabel(label)
+            markerRef.current?.setLabel(markerLabel)
+        }
     }, [label])
     useEffect(() => {
         draggable != undefined && markerRef.current?.setDraggable(draggable)
