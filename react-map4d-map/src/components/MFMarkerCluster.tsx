@@ -13,6 +13,7 @@ const MFMarkerCluster = (props: MarkerClusterProps) => {
         maxZoom = 22,
         radius = 100,
         zoomOnClick,
+        clusterIcon,
         map,
         onCreated
     } = props
@@ -29,7 +30,8 @@ const MFMarkerCluster = (props: MarkerClusterProps) => {
                 minZoom: minZoom,
                 maxZoom: maxZoom,
                 radius: radius,
-                zoomOnClick: zoomOnClick
+                zoomOnClick: zoomOnClick,
+                clusterIcon: clusterIcon,
             }
             Object.keys(option).forEach(key => {
                 if (option[key] == undefined || option[key] == null) {
@@ -79,7 +81,7 @@ const MFMarkerCluster = (props: MarkerClusterProps) => {
         if (theMap) {
             drawCluster()
         }
-    }, [minZoom, maxZoom, radius])
+    }, [minZoom, maxZoom, radius, clusterIcon])
     useEffect(() => {
         zoomOnClick != undefined && markerClusterRef.current?.setZoomOnClick(zoomOnClick)
     }, [zoomOnClick])
