@@ -44,6 +44,10 @@ interface MapOptions {
 interface MapProps {
   mapid?: string
   options: MapOptions,
+  zoom?: number,
+  bearing?: number,
+  center?: any,
+  tilt?: number
   version: string
   accessKey: string,
   environment?: "dev" | "test" | undefined | null,
@@ -58,14 +62,43 @@ interface MapProps {
 
 const MFMap = (props: MapProps) => {
 
+  const _options = useRef({
+    options: props.options,
+    mapId: props.mapid,
+    version: props.version,
+    environment: props.environment,
+    accessKey: props.accessKey,
+    sdkDomain: props.sdkDomain
+  })
+
   const callback = useRef(`callback`)
   const mapDomRef = useRef<any>()
   const mapRef = useRef<map4d.Map>()
   const scriptElement = useRef<HTMLScriptElement>()
   const url = useRef<string>()
   const events = useRef<any[]>([])
+  const { zoom, bearing, center, tilt } = props
 
   const [map, setMap] = useState<map4d.Map>()
+
+  useEffect(() => {
+    if (map) {
+      let camera = map.getCamera()
+      if (zoom != undefined && zoom != null) {
+        camera.setZoom(zoom)
+      }
+      if (bearing != undefined && bearing != null) {
+        camera.setBearing(bearing)
+      }
+      if (center != undefined && center != null) {
+        camera.setTarget(center)
+      }
+      if (tilt != undefined && tilt != null) {
+        camera.setTilt(center)
+      }
+      map.moveCamera(camera)
+    }
+  }, [zoom, bearing, center, map])
 
 
   useEffect(() => {
@@ -73,8 +106,7 @@ const MFMap = (props: MapProps) => {
     callback.current = `callback_${id}`
     const createCallback = () => {
       window[callback.current] = () => {
-        let options = props.options
-        mapRef.current = new window.map4d.Map(mapDomRef.current, options)
+        mapRef.current = new window.map4d.Map(mapDomRef.current, _options.current.options)
         if (props.onMapReady) {
           props.onMapReady(mapRef.current, id)
         }
@@ -82,13 +114,13 @@ const MFMap = (props: MapProps) => {
         setMap(mapRef.current)
       }
     }
-    let domain = `https://api${props.environment ? "-" + props.environment : ""}.map4d.vn`
-    if (props.sdkDomain) {
-      domain = props.sdkDomain
+    let domain = `https://api${props.environment ? "-" + _options.current.environment : ""}.map4d.vn`
+    if (_options.current.sdkDomain) {
+      domain = _options.current.sdkDomain
     }
-    let urlNew = `${domain}/sdk/map/js?version=${props.version}&key=${props.accessKey}&callback=${callback.current}`
-    if (props.mapid) {
-      urlNew += `&mapId=${props.mapid}`
+    let urlNew = `${domain}/sdk/map/js?version=${_options.current.version}&key=${_options.current.accessKey}&callback=${callback.current}`
+    if (_options.current.mapId) {
+      urlNew += `&mapId=${_options.current.mapId}`
     }
     createCallback()
     let script = addLibrary(urlNew, id)
@@ -257,7 +289,14 @@ const MFMap = (props: MapProps) => {
       eventMouseOverMarker,
       eventMouseMoveMarker,
       eventClickPoi,
-      eventHoverPoi
+      eventHoverPoi,
+      mapRef.current?.addListener(MapEventEnum.click, (args: any) => {
+        args.circle?.onClick && args.circle?.onClick(args)
+        args.polygon?.onClick?.(args)
+      }, {
+        circle: true,
+        polygon: true
+      })
     ])
     if (props.onClickLocation) {
       let onClickLocation = mapRef.current?.addListener(MapEventEnum.click, (args: any) => {

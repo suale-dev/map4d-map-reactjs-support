@@ -36,9 +36,12 @@ const MFMarkerCluster = (props: MarkerClusterProps) => {
                     delete option[key]
                 }
             })
-            markerClusterRef.current = new map4d.MarkerClusterer(markerRefs.current, option)
-            markerClusterRef.current?.setMap(theMap)
-            onCreated && onCreated(markerClusterRef.current)
+            if (markerRefs.current && markerRefs.current?.length > 0) {
+                markerClusterRef.current = new map4d.MarkerClusterer(markerRefs.current, option)
+                markerClusterRef.current?.setMap(theMap)
+                onCreated && onCreated(markerClusterRef.current)
+            }
+
         }
     }
     const clusterContext = {

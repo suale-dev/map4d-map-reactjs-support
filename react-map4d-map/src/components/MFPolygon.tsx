@@ -14,7 +14,8 @@ interface PolygonProps {
     clickable?: boolean
     map?: map4d.Map,
     onCreated?: (polygon: map4d.Polygon) => void
-    onHover?: (args: any) => void
+    onHover?: (args: any) => void,
+    onClick?: (args: any) => void
 }
 
 const MFPolygon = (props: PolygonProps) => {
@@ -31,6 +32,7 @@ const MFPolygon = (props: PolygonProps) => {
         clickable,
         map,
         onHover,
+        onClick,
         onCreated
     } = props
 
@@ -62,6 +64,7 @@ const MFPolygon = (props: PolygonProps) => {
             console.log(a.current)
             polygonRef.current?.setMap(theMap)
             polygonRef.current.onHover = props.onHover
+            polygonRef.current.onClick = onClick
             onCreated && onCreated(polygonRef.current)
         }
     }, [theMap])
@@ -88,10 +91,11 @@ const MFPolygon = (props: PolygonProps) => {
 
     useEffect(() => {
         if (polygonRef.current) {
-            let c = polygonRef.current?.getMap()
-            console.log(c == a.current)
+            polygonRef.current.onClick = onClick
         }
+    }, [onClick])
 
+    useEffect(() => {
         polygonRef.current?.setPaths(paths)
     }, [paths])
     useEffect(() => {

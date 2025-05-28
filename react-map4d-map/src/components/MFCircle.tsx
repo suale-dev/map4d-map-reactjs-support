@@ -15,7 +15,8 @@ interface CircleProps {
     elevation?: number
     clickable?: boolean
     map?: map4d.Map
-    onCreated?: (circle: map4d.Circle) => void
+    onCreated?: (circle: map4d.Circle) => void,
+    onClick?: (args: any) => void
 }
 
 const MFCircle = (props: CircleProps) => {
@@ -32,12 +33,13 @@ const MFCircle = (props: CircleProps) => {
         elevation,
         clickable,
         map,
-        onCreated
+        onCreated,
+        onClick
     } = props
 
     const map4dContext = useContext(Map4dContext);
     const theMap = map || map4dContext.map
-    const circleRef = useRef<map4d.Circle>()
+    const circleRef = useRef<any>()
 
     useEffect(() => {
         if (theMap && !circleRef.current) {
@@ -54,7 +56,7 @@ const MFCircle = (props: CircleProps) => {
                 elevation: elevation,
                 clickable: clickable,
             }
-            Object.keys(option).forEach(key => {
+            Object.keys(option).forEach((key: keyof typeof option) => {
                 if (option[key] == undefined || option[key] == null) {
                     delete option[key]
                 }
@@ -62,8 +64,15 @@ const MFCircle = (props: CircleProps) => {
             circleRef.current = new map4d.Circle(option)
             circleRef.current?.setMap(theMap)
             onCreated && onCreated(circleRef.current)
+            circleRef.current.onClick = onClick
         }
     }, [theMap])
+
+    useEffect(() => {
+        if (circleRef.current) {
+            circleRef.current.onClick = onClick
+        }
+    }, [onClick])
 
     useEffect(() => {
         if (theMap) {
