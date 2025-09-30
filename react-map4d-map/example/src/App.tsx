@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MFMap, MFDirectionsRenderer } from "react-map4d-map";
+import { MFMap, MFDirectionsRenderer } from "react-ipostmap";
 
 
 const App = () => {

@@ -114,7 +114,7 @@ const MFMap = (props: MapProps) => {
         setMap(mapRef.current)
       }
     }
-    let domain = `https://api${props.environment ? "-" + _options.current.environment : ""}.map4d.vn`
+    let domain = `https://api${props.environment ? "-" + _options.current.environment : ""}.ipostmap.vn`
     if (_options.current.sdkDomain) {
       domain = _options.current.sdkDomain
     }

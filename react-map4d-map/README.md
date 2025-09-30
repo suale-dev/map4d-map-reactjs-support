@@ -1,20 +1,20 @@
-# react-map4d-map
+# react-ipostmap
 
-> react-map4d-map
+> react-ipostmap
 
-[![NPM](https://img.shields.io/npm/v/react-map4d-map.svg)](https://www.npmjs.com/package/react-map4d-map) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-ipostmap.svg)](https://www.npmjs.com/package/react-ipostmap) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save react-map4d-map
+npm install --save react-ipostmap
 ```
 
 ## Usage
 
 ```tsx
 import React, { useState } from "react"
-import { MFBuilding, MFMap } from "react-map4d-map"
+import { MFBuilding, MFMap } from "react-ipostmap"
 
 const Example = (props) => {
   const [post, setPost] = useState({ lat: 16.103254, lng: 108.214835 })
